@@ -91,117 +91,279 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =cut
 
+=attr C<package>
+
+The package to report as being associated with.
+This really can be any string, as its sanitised and then used as a path part.
+
+If not specified, will inspect C<caller>
+  
+  my $instance = CLASS->new(
+    package => 'Something::Here',
+    ...
+  );
+
+Note: If you want C<with_version> to work properly, specifying a valid package name will be helpful.
+
+=cut
+
 has package => (
-  is      => 'ro',
-  default => quote_sub q| scalar [ caller() ]->[0] |,
+    is      => 'ro',
+    default => quote_sub q| scalar [ caller() ]->[0] |,
 );
+
+=attr C<with_version>
+
+Include the version from C<< package->VERSION() >> in the tempdir path.
+
+Defaults to false.
+
+  my $instance = CLASS->new(
+    ...
+    with_version => 1,
+  );
+
+
+=attr C<with_timestamp>
+
+Include C<time> in the tempdir path.
+
+Defaults to false.
+
+  my $instance = CLASS->new(
+    ...
+    with_timestamp => 1,
+  );
+
+
+=attr C<with_pid>
+
+Include C<$$> in the tempdir path.
+
+Defaults to false.
+
+  my $instance = CLASS->new(
+    ...
+    with_pid => 1,
+  );
+
+
+=attr C<num_random>
+
+The number of characters of randomness to include in the tempdir template.
+
+Defaults to 8. Must be no lower than 4.
+
+  my $instance = CLASS->new(
+    ...
+    num_random => 5,
+  );
+
+=cut
 
 has with_version   => ( is => 'ro', default => quote_sub q{ undef } );
 has with_timestamp => ( is => 'ro', default => quote_sub q{ undef } );
 has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
 has num_random     => (
-  is  => 'ro',
-  isa => (
-    ## no critic ( RequireInterpolationOfMetachars )
-    quote_sub q|require File::Temp;|
-      . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
-      . q| if $_[0] < File::Temp::MINX(); |
-  ),
-  default => quote_sub q{ 8 },
+    is  => 'ro',
+    isa => (
+        ## no critic ( RequireInterpolationOfMetachars )
+        quote_sub q|require File::Temp;|
+          . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
+          . q| if $_[0] < File::Temp::MINX(); |
+    ),
+    default => quote_sub q{ 8 },
 );
+
+=p_attr C<_preserve>
+
+Internal boolean for tracking the _preserve state.
+
+=cut
+
 has _preserve => ( is => 'rw', default => quote_sub q{ undef } );
+
+=p_attr C<_dir>
+
+Internal File::Tempdir path.
+
+=cut
 
 has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
 
-sub preserve {
-  my ( $self, @args ) = @_;
-  if ( not @args ) {
-    $self->_preserve(1);
-    return 1;
+=method C<preserve>
+
+Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+
+  $instance->preserve(); # tempdir is now preserved after cleanup
+  $instance->preserve(0); # tempdir is purged at cleanup
+  $instance->preserve(1); # tempdir is preserved after cleanup
+
+Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>, regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+
+Thus:
+
+  $dir->preserve(1);
+  for( 1..10 ){ 
+    $dir->run_once_in(sub{ 
+
+    });
   }
-  else {
-    if ( not $args[0] ) {
-      $self->_preserve(0);
-      return;
+
+Will create 10 temporary directories on your filesystem and not reap them.
+
+=cut
+
+sub preserve {
+    my ( $self, @args ) = @_;
+    if ( not @args ) {
+        $self->_preserve(1);
+        return 1;
     }
     else {
-      $self->_preserve(1);
-      return 1;
+        if ( not $args[0] ) {
+            $self->_preserve(0);
+            return;
+        }
+        else {
+            $self->_preserve(1);
+            return 1;
+        }
     }
-  }
 }
+
+=p_function C<_clean_pkg>
+
+Scrape garbage out of the 'package' field for use in filesystem tokens.
+
+=cut
 
 sub _clean_pkg {
-  my ($package) = @_;
-  $package =~ s/::/-/gsmx;
-  $package =~ s/[^\w-]+/_/gsmx;
-  return $package;
+    my ($package) = @_;
+    $package =~ s/::/-/gsmx;
+    $package =~ s/[^\w-]+/_/gsmx;
+    return $package;
 }
+
+=p_function C<_clean_ver>
+
+Scrape garbage out of versions for use in filesystem tokens.
+
+=cut
 
 sub _clean_ver {
-  my ($ver) = @_;
-  return 'versionundef' if not defined $ver;
-  $ver =~ s/[^v\d_.]+/_/gsmx;
-  return $ver;
+    my ($ver) = @_;
+    return 'versionundef' if not defined $ver;
+    $ver =~ s/[^v\d_.]+/_/gsmx;
+    return $ver;
 }
+
+=p_method C<_build__dir>
+
+Initializer for _dir which creates a temporary directory based on the passed parameters.
+
+=cut
 
 sub _build__dir {
-  my ($self) = shift;
-  require File::Temp;
+    my ($self) = shift;
+    require File::Temp;
 
-  my $template = q{perl-};
-  $template .= _clean_pkg( $self->package );
+    my $template = q{perl-};
+    $template .= _clean_pkg( $self->package );
 
-  if ( $self->with_version ) {
-    $template .= q{-} . _clean_ver( $self->package->VERSION );
-  }
-  if ( $self->with_timestamp ) {
-    $template .= q{-} . time;
-  }
-  if ( $self->with_pid ) {
-    ## no critic ( ProhibitPunctuationVars )
-    $template .= q{-} . $$;
-  }
-  $template .= q{-} . ( 'X' x $self->num_random );
+    if ( $self->with_version ) {
+        $template .= q{-} . _clean_ver( $self->package->VERSION );
+    }
+    if ( $self->with_timestamp ) {
+        $template .= q{-} . time;
+    }
+    if ( $self->with_pid ) {
+        ## no critic ( ProhibitPunctuationVars )
+        $template .= q{-} . $$;
+    }
+    $template .= q{-} . ( 'X' x $self->num_random );
 
-  my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
-  return $dir;
+    my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
+    return $dir;
 }
+
+=method C<dir>
+
+Return a path string to the created temporary directory
+
+  my $path = $instance->dir
+
+=cut
 
 sub dir {
-  my ($self) = shift;
-  return $self->_dir;
+    my ($self) = shift;
+    return $self->_dir;
 }
+
+=method C<cleanse>
+
+Detach the physical file system directory from being connected to this object.
+
+If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
+will be reset, ready to be re-initialized the next time it is needed.
+
+If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for re-initialization next time it is needed. Just C<dir> is not reaped.
+
+  $instance->cleanse();
+ 
+=cut
 
 sub cleanse {
-  my ($self) = shift;
-  return $self unless $self->_has_dir;
-  if ( not $self->_preserve ) {
-    require File::Path;
-    File::Path::rmtree( $self->_dir, 0, 0 );
-  }
-  $self->_clear_dir;
-  return $self;
+    my ($self) = shift;
+    return $self unless $self->_has_dir;
+    if ( not $self->_preserve ) {
+        require File::Path;
+        File::Path::rmtree( $self->_dir, 0, 0 );
+    }
+    $self->_clear_dir;
+    return $self;
 }
+
+=method C<run_once_in>
+
+Vivifies a temporary directory for the scope of the passed sub.
+
+  $instance->run_once_in(sub{
+    # temporary directory is created before this code runs.
+    # Cwd::getcwd is now inside the temporary directory.
+  });
+
+  # temporary directory is reset, and possibly reaped.
+
+You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+
+=cut
 
 sub run_once_in {
-  my ( $self, $options, $code ) = @_;
-  $code = $options unless defined $code;
-  require File::pushd;
-  {
-    my $marker = File::pushd::pushd( $self->dir );
-    $code->( $self->dir );
-  }
+    my ( $self, $options, $code ) = @_;
+    $code = $options unless defined $code;
+    require File::pushd;
+    {
+        my $marker = File::pushd::pushd( $self->dir );
+        $code->( $self->dir );
+    }
 
-  # Dir POP.
-  $self->cleanse;
-  return $self;
+    # Dir POP.
+    $self->cleanse;
+    return $self;
 }
 
+=method C<DEMOLISH>
+
+Hook to trigger automatic cleansing when the object is lost out of scope, 
+as long as C<preserve> is unset.
+
+=cut
+
 sub DEMOLISH {
-  my ( $self, $in_g_d ) = @_;
-  $self->cleanse;
-  return;
+    my ( $self, $in_g_d ) = @_;
+    $self->cleanse;
+    return;
 }
 
 no Moo;
