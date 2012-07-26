@@ -26,8 +26,8 @@ has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
 has num_random     => (
   is  => 'ro',
   isa => (
-        ## no critic ( RequireInterpolationOfMetachars )
-        quote_sub q|require File::Temp;|
+    ## no critic ( RequireInterpolationOfMetachars )
+    quote_sub q|require File::Temp;|
       . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
       . q| if $_[0] < File::Temp::MINX(); |
   ),
@@ -65,7 +65,7 @@ sub _clean_pkg {
 sub _clean_ver {
   my ($ver) = @_;
   return 'versionundef' if not defined $ver;
-  $ver =~ s/[^v0-9_.]+/_/gsmx;
+  $ver =~ s/[^v\d_.]+/_/gsmx;
   return $ver;
 }
 
@@ -73,19 +73,20 @@ sub _build__dir {
   my ($self) = shift;
   require File::Temp;
 
-  my $template = 'perl-';
+  my $template = q{perl-};
   $template .= _clean_pkg( $self->package );
 
   if ( $self->with_version ) {
-    $template .= '-' . _clean_ver( $self->package->VERSION );
+    $template .= q{-} . _clean_ver( $self->package->VERSION );
   }
   if ( $self->with_timestamp ) {
-    $template .= '-' . time;
+    $template .= q{-} . time;
   }
   if ( $self->with_pid ) {
-    $template .= '-' . $$;
+    ## no critic ( ProhibitPunctuationVars )
+    $template .= q{-} . $$;
   }
-  $template .= '-' . ( 'X' x $self->num_random );
+  $template .= q{-} . ( 'X' x $self->num_random );
 
   my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
   return $dir;
@@ -124,6 +125,7 @@ sub run_once_in {
 sub DEMOLISH {
   my ( $self, $in_g_d ) = @_;
   $self->cleanse;
+  return;
 }
 
 no Moo;
