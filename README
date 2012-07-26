@@ -95,10 +95,60 @@ METHODS
   "DEMOLISH"
 ATTRIBUTES
   "package"
+    The package to report as being associated with. This really can be any
+    string, as its sanitised and then used as a path part.
+
+    If not specified, will inspect "caller"
+
+            my $instance = CLASS->new(
+                    package => 'Something::Here',
+                    ...
+            );
+
+    Note: If you want "with_version" to work properly, specifying a valid
+    package name will be helpful.
+
   "with_version"
+    Include the version from "package-"VERSION()> in the tempdir path.
+
+    Defaults to false.
+
+            my $instance = CLASS->new(
+                    ...
+                    with_version => 1,
+            );
+
   "with_timestamp"
+    Include "time" in the tempdir path.
+
+    Defaults to false.
+
+            my $instance = CLASS->new(
+                    ...
+                    with_timestamp => 1,
+            );
+
   "with_pid"
+    Include $$ in the tempdir path.
+
+    Defaults to false.
+
+            my $instance = CLASS->new(
+                    ...
+                    with_pid => 1,
+            );
+
   "num_random"
+    The number of characters of randomness to include in the tempdir
+    template.
+
+    Defaults to 8. Must be no lower than 4.
+
+            my $instance = CLASS->new(
+                    ...
+                    num_random => 5,
+            );
+
 PRIVATE ATTRIBUTES
   "_preserve"
   "_dir"

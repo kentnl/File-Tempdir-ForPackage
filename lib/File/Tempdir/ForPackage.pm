@@ -253,13 +253,61 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =head2 C<package>
 
+The package to report as being associated with.
+This really can be any string, as its sanitised and then used as a path part.
+
+If not specified, will inspect C<caller>
+
+	my $instance = CLASS->new(
+		package => 'Something::Here',
+		...
+	);
+
+Note: If you want C<with_version> to work properly, specifying a valid package name will be helpful.
+
 =head2 C<with_version>
+
+Include the version from C<package->VERSION()> in the tempdir path.
+
+Defaults to false.
+
+	my $instance = CLASS->new(
+		...
+		with_version => 1,
+	);
 
 =head2 C<with_timestamp>
 
+Include C<time> in the tempdir path.
+
+Defaults to false.
+
+	my $instance = CLASS->new(
+		...
+		with_timestamp => 1,
+	);
+
 =head2 C<with_pid>
 
+Include C<$$> in the tempdir path.
+
+Defaults to false.
+
+	my $instance = CLASS->new(
+		...
+		with_pid => 1,
+	);
+
 =head2 C<num_random>
+
+The number of characters of randomness to include in the tempdir template.
+
+Defaults to 8. Must be no lower than 4.
+
+	my $instance = CLASS->new(
+		...
+		num_random => 5,
+	);
 
 =head1 PRIVATE ATTRIBUTES
 
