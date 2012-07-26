@@ -26,6 +26,7 @@ has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
 has num_random     => (
   is  => 'ro',
   isa => (
+        ## no critic ( RequireInterpolationOfMetachars )
         quote_sub q|require File::Temp;|
       . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
       . q| if $_[0] < File::Temp::MINX(); |
@@ -45,24 +46,26 @@ sub preserve {
   else {
     if ( not $args[0] ) {
       $self->_preserve(0);
+      return;
     }
     else {
       $self->_preserve(1);
+      return 1;
     }
   }
 }
 
 sub _clean_pkg {
   my ($package) = @_;
-  $package =~ s/::/-/g;
-  $package =~ s/[^A-Za-z0-9_-]+/_/g;
+  $package =~ s/::/-/gsmx;
+  $package =~ s/[^\w-]+/_/gsmx;
   return $package;
 }
 
 sub _clean_ver {
   my ($ver) = @_;
   return 'versionundef' if not defined $ver;
-  $ver =~ s/[^v0-9_.]+/_/g;
+  $ver =~ s/[^v0-9_.]+/_/gsmx;
   return $ver;
 }
 
