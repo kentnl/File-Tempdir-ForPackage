@@ -271,9 +271,11 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =head2 _build__dir 
 
-=p_function _clean_pkg
+=head1 PRIVATE FUNCTIONS
 
-=p_function _clean_ver
+=head2 _clean_pkg
+
+=head2 _clean_ver
 
 =head1 AUTHOR
 

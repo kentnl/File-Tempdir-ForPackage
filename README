@@ -104,10 +104,9 @@ PRIVATE ATTRIBUTES
   _dir
 PRIVATE METHODS
   _build__dir
-    =p_function _clean_pkg
-
-    =p_function _clean_ver
-
+PRIVATE FUNCTIONS
+  _clean_pkg
+  _clean_ver
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>
 
