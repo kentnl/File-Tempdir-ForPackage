@@ -6,7 +6,7 @@ BEGIN {
   $File::Tempdir::ForPackage::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $File::Tempdir::ForPackage::VERSION = '0.1.0';
+  $File::Tempdir::ForPackage::VERSION = '0.1.1';
 }
 
 # ABSTRACT: Easy temporary directories associated with packages.
@@ -15,117 +15,130 @@ use Moo;
 use Sub::Quote qw( quote_sub );
 
 
+
 has package => (
-  is      => 'ro',
-  default => quote_sub q| scalar [ caller() ]->[0] |,
+    is      => 'ro',
+    default => quote_sub q| scalar [ caller() ]->[0] |,
 );
+
 
 has with_version   => ( is => 'ro', default => quote_sub q{ undef } );
 has with_timestamp => ( is => 'ro', default => quote_sub q{ undef } );
 has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
 has num_random     => (
-  is  => 'ro',
-  isa => (
-    ## no critic ( RequireInterpolationOfMetachars )
-    quote_sub q|require File::Temp;|
-      . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
-      . q| if $_[0] < File::Temp::MINX(); |
-  ),
-  default => quote_sub q{ 8 },
+    is  => 'ro',
+    isa => (
+        ## no critic ( RequireInterpolationOfMetachars )
+        quote_sub q|require File::Temp;|
+          . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
+          . q| if $_[0] < File::Temp::MINX(); |
+    ),
+    default => quote_sub q{ 8 },
 );
+
+
 has _preserve => ( is => 'rw', default => quote_sub q{ undef } );
+
 
 has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
 
+
 sub preserve {
-  my ( $self, @args ) = @_;
-  if ( not @args ) {
-    $self->_preserve(1);
-    return 1;
-  }
-  else {
-    if ( not $args[0] ) {
-      $self->_preserve(0);
-      return;
+    my ( $self, @args ) = @_;
+    if ( not @args ) {
+        $self->_preserve(1);
+        return 1;
     }
     else {
-      $self->_preserve(1);
-      return 1;
+        if ( not $args[0] ) {
+            $self->_preserve(0);
+            return;
+        }
+        else {
+            $self->_preserve(1);
+            return 1;
+        }
     }
-  }
 }
+
 
 sub _clean_pkg {
-  my ($package) = @_;
-  $package =~ s/::/-/gsmx;
-  $package =~ s/[^\w-]+/_/gsmx;
-  return $package;
+    my ($package) = @_;
+    $package =~ s/::/-/gsmx;
+    $package =~ s/[^\w-]+/_/gsmx;
+    return $package;
 }
+
 
 sub _clean_ver {
-  my ($ver) = @_;
-  return 'versionundef' if not defined $ver;
-  $ver =~ s/[^v\d_.]+/_/gsmx;
-  return $ver;
+    my ($ver) = @_;
+    return 'versionundef' if not defined $ver;
+    $ver =~ s/[^v\d_.]+/_/gsmx;
+    return $ver;
 }
+
 
 sub _build__dir {
-  my ($self) = shift;
-  require File::Temp;
+    my ($self) = shift;
+    require File::Temp;
 
-  my $template = q{perl-};
-  $template .= _clean_pkg( $self->package );
+    my $template = q{perl-};
+    $template .= _clean_pkg( $self->package );
 
-  if ( $self->with_version ) {
-    $template .= q{-} . _clean_ver( $self->package->VERSION );
-  }
-  if ( $self->with_timestamp ) {
-    $template .= q{-} . time;
-  }
-  if ( $self->with_pid ) {
-    ## no critic ( ProhibitPunctuationVars )
-    $template .= q{-} . $$;
-  }
-  $template .= q{-} . ( 'X' x $self->num_random );
+    if ( $self->with_version ) {
+        $template .= q{-} . _clean_ver( $self->package->VERSION );
+    }
+    if ( $self->with_timestamp ) {
+        $template .= q{-} . time;
+    }
+    if ( $self->with_pid ) {
+        ## no critic ( ProhibitPunctuationVars )
+        $template .= q{-} . $$;
+    }
+    $template .= q{-} . ( 'X' x $self->num_random );
 
-  my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
-  return $dir;
+    my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
+    return $dir;
 }
+
 
 sub dir {
-  my ($self) = shift;
-  return $self->_dir;
+    my ($self) = shift;
+    return $self->_dir;
 }
+
 
 sub cleanse {
-  my ($self) = shift;
-  return $self unless $self->_has_dir;
-  if ( not $self->_preserve ) {
-    require File::Path;
-    File::Path::rmtree( $self->_dir, 0, 0 );
-  }
-  $self->_clear_dir;
-  return $self;
+    my ($self) = shift;
+    return $self unless $self->_has_dir;
+    if ( not $self->_preserve ) {
+        require File::Path;
+        File::Path::rmtree( $self->_dir, 0, 0 );
+    }
+    $self->_clear_dir;
+    return $self;
 }
+
 
 sub run_once_in {
-  my ( $self, $options, $code ) = @_;
-  $code = $options unless defined $code;
-  require File::pushd;
-  {
-    my $marker = File::pushd::pushd( $self->dir );
-    $code->( $self->dir );
-  }
+    my ( $self, $options, $code ) = @_;
+    $code = $options unless defined $code;
+    require File::pushd;
+    {
+        my $marker = File::pushd::pushd( $self->dir );
+        $code->( $self->dir );
+    }
 
-  # Dir POP.
-  $self->cleanse;
-  return $self;
+    # Dir POP.
+    $self->cleanse;
+    return $self;
 }
 
+
 sub DEMOLISH {
-  my ( $self, $in_g_d ) = @_;
-  $self->cleanse;
-  return;
+    my ( $self, $in_g_d ) = @_;
+    $self->cleanse;
+    return;
 }
 
 no Moo;
@@ -143,7 +156,7 @@ File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 =head1 VERSION
 
-version 0.1.0
+version 0.1.1
 
 =head1 DESCRIPTION
 
@@ -223,6 +236,44 @@ This emits something like:
   /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-rdcQhF
 
 Except of course, with a package of your choosing, and possibly that packages version.
+
+=head1 METHODS
+
+=head2 preserve
+
+=head2 dir
+
+=head2 cleanse
+
+=head2 run_once_in
+
+=head2 DEMOLISH
+
+=head1 ATTRIBUTES
+
+=head2 package
+
+=head2 with_version
+
+=head2 with_timestamp
+
+=head2 with_pid
+
+=head2 num_random
+
+=head1 PRIVATE ATTRIBUTES
+
+=head2 _preserve
+
+=head2 _dir 
+
+=head1 PRIVATE METHODS
+
+=head2 _build__dir 
+
+=p_function _clean_pkg
+
+=p_function _clean_ver
 
 =head1 AUTHOR
 

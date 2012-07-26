@@ -3,7 +3,7 @@ NAME
     packages.
 
 VERSION
-    version 0.1.0
+    version 0.1.1
 
 DESCRIPTION
     This is mostly an interface wrapper for File::Temp::tempdir, stealing
@@ -86,6 +86,27 @@ DESCRIPTION
 
     Except of course, with a package of your choosing, and possibly that
     packages version.
+
+METHODS
+  preserve
+  dir
+  cleanse
+  run_once_in
+  DEMOLISH
+ATTRIBUTES
+  package
+  with_version
+  with_timestamp
+  with_pid
+  num_random
+PRIVATE ATTRIBUTES
+  _preserve
+  _dir
+PRIVATE METHODS
+  _build__dir
+    =p_function _clean_pkg
+
+    =p_function _clean_ver
 
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>
