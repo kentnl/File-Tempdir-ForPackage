@@ -239,43 +239,43 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =head1 METHODS
 
-=head2 preserve
+=head2 C<preserve>
 
-=head2 dir
+=head2 C<dir>
 
-=head2 cleanse
+=head2 C<cleanse>
 
-=head2 run_once_in
+=head2 C<run_once_in>
 
-=head2 DEMOLISH
+=head2 C<DEMOLISH>
 
 =head1 ATTRIBUTES
 
-=head2 package
+=head2 C<package>
 
-=head2 with_version
+=head2 C<with_version>
 
-=head2 with_timestamp
+=head2 C<with_timestamp>
 
-=head2 with_pid
+=head2 C<with_pid>
 
-=head2 num_random
+=head2 C<num_random>
 
 =head1 PRIVATE ATTRIBUTES
 
-=head2 _preserve
+=head2 C<_preserve>
 
-=head2 _dir 
+=head2 C<_dir>
 
 =head1 PRIVATE METHODS
 
-=head2 _build__dir 
+=head2 C<_build__dir>
 
 =head1 PRIVATE FUNCTIONS
 
-=head2 _clean_pkg
+=head2 C<_clean_pkg>
 
-=head2 _clean_ver
+=head2 C<_clean_ver>
 
 =head1 AUTHOR
 

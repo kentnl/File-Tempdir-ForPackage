@@ -88,25 +88,25 @@ DESCRIPTION
     packages version.
 
 METHODS
-  preserve
-  dir
-  cleanse
-  run_once_in
-  DEMOLISH
+  "preserve"
+  "dir"
+  "cleanse"
+  "run_once_in"
+  "DEMOLISH"
 ATTRIBUTES
-  package
-  with_version
-  with_timestamp
-  with_pid
-  num_random
+  "package"
+  "with_version"
+  "with_timestamp"
+  "with_pid"
+  "num_random"
 PRIVATE ATTRIBUTES
-  _preserve
-  _dir
+  "_preserve"
+  "_dir"
 PRIVATE METHODS
-  _build__dir
+  "_build__dir"
 PRIVATE FUNCTIONS
-  _clean_pkg
-  _clean_ver
+  "_clean_pkg"
+  "_clean_ver"
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>
 
