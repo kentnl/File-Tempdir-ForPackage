@@ -17,10 +17,7 @@ use Sub::Quote qw( quote_sub );
 
 has package => (
   is      => 'ro',
-  default => quote_sub q{
-	my $pkg = [ caller() ]->[0];
-	$pkg;
-  }
+  default => quote_sub q| scalar [ caller() ]->[0] |,
 );
 
 has with_version   => ( is => 'ro', default => quote_sub q{ undef } );
@@ -29,11 +26,9 @@ has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
 has num_random     => (
   is  => 'ro',
   isa => (
-    quote_sub q{
-		require File::Temp;
-		die "num_random ( $_[0] ) must be >= " . File::Temp::MINX()
-			if $_[0] < File::Temp::MINX();
-	}
+        quote_sub q|require File::Temp;|
+      . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
+      . q| if $_[0] < File::Temp::MINX(); |
   ),
   default => quote_sub q{ 8 },
 );
@@ -183,44 +178,44 @@ Is there for people who don't trust scope auto-cleansing and want to know when t
 Additionally, this code can be run in a tight loop creating and destroying lots of similary named tempdirs without risk of conflict.
 
     for my $i ( 0 .. 30  ) {
-	$dir->run_once_in(sub { 
-		system 'find $PWD';
-	});
+  $dir->run_once_in(sub { 
+    system 'find $PWD';
+  });
     }
 
 This emits something like:
 
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-PzH4BD
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-5h8nkG
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-UXKt4S
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Lqg2aW
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-DkNeq6
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-jRI_zF
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-j0_Gt1
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iX1ddT
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmvikK
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-QNGOUF
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-6wssvL
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmwZxl
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-wIzRTs
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xetCym
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-8Y0vyX
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zlqt6X
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-U5Z_Sa
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-sKmow1
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rUND95
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-XjPSGF
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ec8sZZ
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-_4NBwX
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xM9i6l
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-p3FhJf
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zv0sso
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rP8cAi
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iade0x
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-fsDDPy
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-FeCcfZ
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-ta5yfg
-	/tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-rdcQhF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-PzH4BD
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-5h8nkG
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-UXKt4S
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Lqg2aW
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-DkNeq6
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-jRI_zF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-j0_Gt1
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iX1ddT
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmvikK
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-QNGOUF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-6wssvL
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmwZxl
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-wIzRTs
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xetCym
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-8Y0vyX
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zlqt6X
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-U5Z_Sa
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-sKmow1
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rUND95
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-XjPSGF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ec8sZZ
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-_4NBwX
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xM9i6l
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-p3FhJf
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zv0sso
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rP8cAi
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iade0x
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-fsDDPy
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-FeCcfZ
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-ta5yfg
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-rdcQhF
 
 Except of course, with a package of your choosing, and possibly that packages version.
 
