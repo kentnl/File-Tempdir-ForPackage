@@ -174,19 +174,19 @@ When $tempdir is destroyed, $dir will be cleaned;
 
 Additionally:
 
-   $dir->run_once_in(sub{
-
-   });
+  $dir->run_once_in(sub{
+    ...
+  });
 
 Is there for people who don't trust scope auto-cleansing and want to know when the dir is reaped.
 
 Additionally, this code can be run in a tight loop creating and destroying lots of similary named tempdirs without risk of conflict.
 
-    for my $i ( 0 .. 30  ) {
-  $dir->run_once_in(sub { 
-    system 'find $PWD';
-  });
-    }
+  for my $i ( 0 .. 30  ) {
+    $dir->run_once_in(sub {
+      system 'find $PWD';
+    });
+  }
 
 This emits something like:
 
