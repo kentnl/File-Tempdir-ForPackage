@@ -1,5 +1,5 @@
 ---
-abstract: 'Easy temporary directories associated with classes/objects'
+abstract: 'Easy temporary directories associated with packages.'
 author:
   - 'Kent Fredric <kentfredric@gmail.com>'
 build_requires:
@@ -28,6 +28,9 @@ requires:
   perl: v5.10.0
   strict: 0
   warnings: 0
+resources:
+  homepage: https://github.com/kentfredric/File-Tempdir-ForPackage
+  repository: https://github.com/kentfredric/File-Tempdir-ForPackage.git
 version: 0.1.0
 x_BuiltWith:
   modules:

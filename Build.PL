@@ -14,7 +14,7 @@ my %module_build_args = (
   "configure_requires" => {
     "Module::Build" => "0.4001"
   },
-  "dist_abstract" => "Easy temporary directories associated with classes/objects",
+  "dist_abstract" => "Easy temporary directories associated with packages.",
   "dist_author" => [
     "Kent Fredric <kentfredric\@gmail.com>"
   ],

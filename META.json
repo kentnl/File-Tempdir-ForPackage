@@ -1,5 +1,5 @@
 {
-   "abstract" : "Easy temporary directories associated with classes/objects",
+   "abstract" : "Easy temporary directories associated with packages.",
    "author" : [
       "Kent Fredric <kentfredric@gmail.com>"
    ],
@@ -61,6 +61,14 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "homepage" : "https://github.com/kentfredric/File-Tempdir-ForPackage",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/kentfredric/File-Tempdir-ForPackage.git",
+         "web" : "https://github.com/kentfredric/File-Tempdir-ForPackage"
+      }
+   },
    "version" : "0.1.0",
    "x_BuiltWith" : {
       "modules" : {

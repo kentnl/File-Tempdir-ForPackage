@@ -9,7 +9,7 @@ BEGIN {
   $File::Tempdir::ForPackage::VERSION = '0.1.0';
 }
 
-# ABSTRACT: Easy temporary directories associated with classes/objects
+# ABSTRACT: Easy temporary directories associated with packages.
 
 use Moo;
 use Sub::Quote qw( quote_sub );
@@ -139,7 +139,7 @@ __END__
 
 =head1 NAME
 
-File::Tempdir::ForPackage - Easy temporary directories associated with classes/objects
+File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 =head1 VERSION
 

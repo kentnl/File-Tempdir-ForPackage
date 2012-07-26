@@ -1,6 +1,6 @@
 NAME
     File::Tempdir::ForPackage - Easy temporary directories associated with
-    classes/objects
+    packages.
 
 VERSION
     version 0.1.0
