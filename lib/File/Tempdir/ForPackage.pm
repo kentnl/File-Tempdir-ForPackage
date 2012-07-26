@@ -3,7 +3,7 @@ use warnings;
 
 package File::Tempdir::ForPackage;
 
-# ABSTRACT: Easy temporary directories associated with classes/objects
+# ABSTRACT: Easy temporary directories associated with packages.
 
 use Moo;
 use Sub::Quote qw( quote_sub );
