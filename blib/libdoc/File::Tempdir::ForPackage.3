@@ -142,7 +142,7 @@
 File::Tempdir::ForPackage \- Easy temporary directories associated with packages.
 .SH "VERSION"
 .IX Header "VERSION"
-version 0.1.0
+version 0.1.1
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 This is mostly an interface wrapper for File::Temp::tempdir, stealing code from File::Tempdir;
@@ -225,6 +225,170 @@ This emits something like:
 .Ve
 .PP
 Except of course, with a package of your choosing, and possibly that packages version.
+.SH "METHODS"
+.IX Header "METHODS"
+.ie n .SS """preserve"""
+.el .SS "\f(CWpreserve\fP"
+.IX Subsection "preserve"
+Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+.PP
+.Vb 3
+\&  $instance\->preserve(); # tempdir is now preserved after cleanup
+\&  $instance\->preserve(0); # tempdir is purged at cleanup
+\&  $instance\->preserve(1); # tempdir is preserved after cleanup
+.Ve
+.PP
+Note that in \f(CW\*(C`run_once_in\*(C'\fR, a new tempdir is created and set for this modules consumption for each run of \f(CW\*(C`run_once_in\*(C'\fR, regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+.PP
+Thus:
+.PP
+.Vb 3
+\&  $dir\->preserve(1);
+\&  for( 1..10 ){ 
+\&    $dir\->run_once_in(sub{ 
+\&
+\&    });
+\&  }
+.Ve
+.PP
+Will create 10 temporary directories on your filesystem and not reap them.
+.ie n .SS """dir"""
+.el .SS "\f(CWdir\fP"
+.IX Subsection "dir"
+Return a path string to the created temporary directory
+.PP
+.Vb 1
+\&  my $path = $instance\->dir
+.Ve
+.ie n .SS """cleanse"""
+.el .SS "\f(CWcleanse\fP"
+.IX Subsection "cleanse"
+Detach the physical file system directory from being connected to this object.
+.PP
+If \f(CW\*(C`preserve\*(C'\fR is not set, then this will mean \f(CW\*(C`dir\*(C'\fR will be reaped, and the \f(CW\*(C`dir\*(C'\fR attribute
+will be reset, ready to be re-initialized the next time it is needed.
+.PP
+If \f(CW\*(C`preserve\*(C'\fR is set, then from the outside codes persective its basically the same, \f(CW\*(C`dir\*(C'\fR is reset, waiting for re-initialization next time it is needed. Just \f(CW\*(C`dir\*(C'\fR is not reaped.
+.PP
+.Vb 1
+\&  $instance\->cleanse();
+.Ve
+.ie n .SS """run_once_in"""
+.el .SS "\f(CWrun_once_in\fP"
+.IX Subsection "run_once_in"
+Vivifies a temporary directory for the scope of the passed sub.
+.PP
+.Vb 4
+\&  $instance\->run_once_in(sub{
+\&    # temporary directory is created before this code runs.
+\&    # Cwd::getcwd is now inside the temporary directory.
+\&  });
+\&
+\&  # temporary directory is reset, and possibly reaped.
+.Ve
+.PP
+You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+.ie n .SS """DEMOLISH"""
+.el .SS "\f(CWDEMOLISH\fP"
+.IX Subsection "DEMOLISH"
+Hook to trigger automatic cleansing when the object is lost out of scope, 
+as long as \f(CW\*(C`preserve\*(C'\fR is unset.
+.SH "ATTRIBUTES"
+.IX Header "ATTRIBUTES"
+.ie n .SS """package"""
+.el .SS "\f(CWpackage\fP"
+.IX Subsection "package"
+The package to report as being associated with.
+This really can be any string, as its sanitised and then used as a path part.
+.PP
+If not specified, will inspect \f(CW\*(C`caller\*(C'\fR
+.PP
+.Vb 4
+\&  my $instance = CLASS\->new(
+\&    package => \*(AqSomething::Here\*(Aq,
+\&    ...
+\&  );
+.Ve
+.PP
+Note: If you want \f(CW\*(C`with_version\*(C'\fR to work properly, specifying a valid package name will be helpful.
+.ie n .SS """with_version"""
+.el .SS "\f(CWwith_version\fP"
+.IX Subsection "with_version"
+Include the version from \f(CW\*(C`package\->VERSION()\*(C'\fR in the tempdir path.
+.PP
+Defaults to false.
+.PP
+.Vb 4
+\&  my $instance = CLASS\->new(
+\&    ...
+\&    with_version => 1,
+\&  );
+.Ve
+.ie n .SS """with_timestamp"""
+.el .SS "\f(CWwith_timestamp\fP"
+.IX Subsection "with_timestamp"
+Include \f(CW\*(C`time\*(C'\fR in the tempdir path.
+.PP
+Defaults to false.
+.PP
+.Vb 4
+\&  my $instance = CLASS\->new(
+\&    ...
+\&    with_timestamp => 1,
+\&  );
+.Ve
+.ie n .SS """with_pid"""
+.el .SS "\f(CWwith_pid\fP"
+.IX Subsection "with_pid"
+Include \f(CW$$\fR in the tempdir path.
+.PP
+Defaults to false.
+.PP
+.Vb 4
+\&  my $instance = CLASS\->new(
+\&    ...
+\&    with_pid => 1,
+\&  );
+.Ve
+.ie n .SS """num_random"""
+.el .SS "\f(CWnum_random\fP"
+.IX Subsection "num_random"
+The number of characters of randomness to include in the tempdir template.
+.PP
+Defaults to 8. Must be no lower than 4.
+.PP
+.Vb 4
+\&  my $instance = CLASS\->new(
+\&    ...
+\&    num_random => 5,
+\&  );
+.Ve
+.SH "PRIVATE ATTRIBUTES"
+.IX Header "PRIVATE ATTRIBUTES"
+.ie n .SS """_preserve"""
+.el .SS "\f(CW_preserve\fP"
+.IX Subsection "_preserve"
+Internal boolean for tracking the _preserve state.
+.ie n .SS """_dir"""
+.el .SS "\f(CW_dir\fP"
+.IX Subsection "_dir"
+Internal File::Tempdir path.
+.SH "PRIVATE METHODS"
+.IX Header "PRIVATE METHODS"
+.ie n .SS """_build_\|_dir"""
+.el .SS "\f(CW_build_\|_dir\fP"
+.IX Subsection "_build__dir"
+Initializer for _dir which creates a temporary directory based on the passed parameters.
+.SH "PRIVATE FUNCTIONS"
+.IX Header "PRIVATE FUNCTIONS"
+.ie n .SS """_clean_pkg"""
+.el .SS "\f(CW_clean_pkg\fP"
+.IX Subsection "_clean_pkg"
+Scrape garbage out of the 'package' field for use in filesystem tokens.
+.ie n .SS """_clean_ver"""
+.el .SS "\f(CW_clean_ver\fP"
+.IX Subsection "_clean_ver"
+Scrape garbage out of versions for use in filesystem tokens.
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Kent Fredric <kentfredric@gmail.com>

@@ -42,7 +42,7 @@
    "provides" : {
       "File::Tempdir::ForPackage" : {
          "file" : "lib/File/Tempdir/ForPackage.pm",
-         "version" : "v0.1.0"
+         "version" : "v0.1.1"
       }
    },
    "release_status" : "stable",
@@ -52,7 +52,7 @@
          "url" : "https://github.com/kentfredric/File-Tempdir-ForPackage.git"
       }
    },
-   "version" : "0.1.0",
+   "version" : "0.1.1",
    "x_BuiltWith" : {
       "modules" : {
          "Dist::Zilla::PluginBundle::Author::KENTNL" : "1.4.2",

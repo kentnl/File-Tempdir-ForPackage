@@ -1,5 +1,9 @@
 Release history for File-Tempdir-ForPackage
 
+0.1.1 2012-07-26T14:43:40Z
+ [Documentation]
+ - Full documentation of all directly defined properties.
+
 0.1.0 2012-07-26T12:58:43Z
  - First version.
 

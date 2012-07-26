@@ -3,7 +3,7 @@ NAME
     packages.
 
 VERSION
-    version 0.1.0
+    version 0.1.1
 
 DESCRIPTION
     This is mostly an interface wrapper for File::Temp::tempdir, stealing
@@ -86,6 +86,143 @@ DESCRIPTION
 
     Except of course, with a package of your choosing, and possibly that
     packages version.
+
+METHODS
+  "preserve"
+    Toggle the preservation of the tempdir after it goes out of scope or is
+    otherwise indicated for cleaning.
+
+      $instance->preserve(); # tempdir is now preserved after cleanup
+      $instance->preserve(0); # tempdir is purged at cleanup
+      $instance->preserve(1); # tempdir is preserved after cleanup
+
+    Note that in "run_once_in", a new tempdir is created and set for this
+    modules consumption for each run of "run_once_in", regardless of this
+    setting. All this setting will do, when set, will prevent each instance
+    being reaped from the filesystem.
+
+    Thus:
+
+      $dir->preserve(1);
+      for( 1..10 ){ 
+        $dir->run_once_in(sub{ 
+
+        });
+      }
+
+    Will create 10 temporary directories on your filesystem and not reap
+    them.
+
+  "dir"
+    Return a path string to the created temporary directory
+
+      my $path = $instance->dir
+
+  "cleanse"
+    Detach the physical file system directory from being connected to this
+    object.
+
+    If "preserve" is not set, then this will mean "dir" will be reaped, and
+    the "dir" attribute will be reset, ready to be re-initialized the next
+    time it is needed.
+
+    If "preserve" is set, then from the outside codes persective its
+    basically the same, "dir" is reset, waiting for re-initialization next
+    time it is needed. Just "dir" is not reaped.
+
+      $instance->cleanse();
+
+  "run_once_in"
+    Vivifies a temporary directory for the scope of the passed sub.
+
+      $instance->run_once_in(sub{
+        # temporary directory is created before this code runs.
+        # Cwd::getcwd is now inside the temporary directory.
+      });
+
+      # temporary directory is reset, and possibly reaped.
+
+    You can call this method repeatedly, and you'll get a seperate temporary
+    directory each time.
+
+  "DEMOLISH"
+    Hook to trigger automatic cleansing when the object is lost out of
+    scope, as long as "preserve" is unset.
+
+ATTRIBUTES
+  "package"
+    The package to report as being associated with. This really can be any
+    string, as its sanitised and then used as a path part.
+
+    If not specified, will inspect "caller"
+
+      my $instance = CLASS->new(
+        package => 'Something::Here',
+        ...
+      );
+
+    Note: If you want "with_version" to work properly, specifying a valid
+    package name will be helpful.
+
+  "with_version"
+    Include the version from "package->VERSION()" in the tempdir path.
+
+    Defaults to false.
+
+      my $instance = CLASS->new(
+        ...
+        with_version => 1,
+      );
+
+  "with_timestamp"
+    Include "time" in the tempdir path.
+
+    Defaults to false.
+
+      my $instance = CLASS->new(
+        ...
+        with_timestamp => 1,
+      );
+
+  "with_pid"
+    Include $$ in the tempdir path.
+
+    Defaults to false.
+
+      my $instance = CLASS->new(
+        ...
+        with_pid => 1,
+      );
+
+  "num_random"
+    The number of characters of randomness to include in the tempdir
+    template.
+
+    Defaults to 8. Must be no lower than 4.
+
+      my $instance = CLASS->new(
+        ...
+        num_random => 5,
+      );
+
+PRIVATE ATTRIBUTES
+  "_preserve"
+    Internal boolean for tracking the _preserve state.
+
+  "_dir"
+    Internal File::Tempdir path.
+
+PRIVATE METHODS
+  "_build__dir"
+    Initializer for _dir which creates a temporary directory based on the
+    passed parameters.
+
+PRIVATE FUNCTIONS
+  "_clean_pkg"
+    Scrape garbage out of the 'package' field for use in filesystem tokens.
+
+  "_clean_ver"
+    Scrape garbage out of versions for use in filesystem tokens.
 
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>
