@@ -241,13 +241,59 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =head2 C<preserve>
 
+Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+
+  $instance->preserve(); # tempdir is now preserved after cleanup
+  $instance->preserve(0); # tempdir is purged at cleanup
+  $instance->preserve(1); # tempdir is preserved after cleanup
+
+Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>, regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+
+Thus:
+
+  $dir->preserve(1);
+  for( 1..10 ){ 
+    $dir->run_once_in(sub{ 
+
+    });
+  }
+
+Will create 10 temporary directories on your filesystem and not reap them.
+
 =head2 C<dir>
+
+Return a path string to the created temporary directory
+
+  my $path = $instance->dir
 
 =head2 C<cleanse>
 
+Detach the physical file system directory from being connected to this object.
+
+If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
+will be reset, ready to be re-initialized the next time it is needed.
+
+If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for re-initialization next time it is needed. Just C<dir> is not reaped.
+
+  $instance->cleanse();
+
 =head2 C<run_once_in>
 
+Vivifies a temporary directory for the scope of the passed sub.
+
+  $instance->run_once_in(sub{
+    # temporary directory is created before this code runs.
+    # Cwd::getcwd is now inside the temporary directory.
+  });
+
+  # temporary directory is reset, and possibly reaped.
+
+You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+
 =head2 C<DEMOLISH>
+
+Hook to trigger automatic cleansing when the object is lost out of scope, 
+as long as C<preserve> is unset.
 
 =head1 ATTRIBUTES
 
@@ -258,23 +304,23 @@ This really can be any string, as its sanitised and then used as a path part.
 
 If not specified, will inspect C<caller>
 
-	my $instance = CLASS->new(
-		package => 'Something::Here',
-		...
-	);
+  my $instance = CLASS->new(
+    package => 'Something::Here',
+    ...
+  );
 
 Note: If you want C<with_version> to work properly, specifying a valid package name will be helpful.
 
 =head2 C<with_version>
 
-Include the version from C<package->VERSION()> in the tempdir path.
+Include the version from C<< package->VERSION() >> in the tempdir path.
 
 Defaults to false.
 
-	my $instance = CLASS->new(
-		...
-		with_version => 1,
-	);
+  my $instance = CLASS->new(
+    ...
+    with_version => 1,
+  );
 
 =head2 C<with_timestamp>
 
@@ -282,10 +328,10 @@ Include C<time> in the tempdir path.
 
 Defaults to false.
 
-	my $instance = CLASS->new(
-		...
-		with_timestamp => 1,
-	);
+  my $instance = CLASS->new(
+    ...
+    with_timestamp => 1,
+  );
 
 =head2 C<with_pid>
 
@@ -293,10 +339,10 @@ Include C<$$> in the tempdir path.
 
 Defaults to false.
 
-	my $instance = CLASS->new(
-		...
-		with_pid => 1,
-	);
+  my $instance = CLASS->new(
+    ...
+    with_pid => 1,
+  );
 
 =head2 C<num_random>
 
@@ -304,10 +350,10 @@ The number of characters of randomness to include in the tempdir template.
 
 Defaults to 8. Must be no lower than 4.
 
-	my $instance = CLASS->new(
-		...
-		num_random => 5,
-	);
+  my $instance = CLASS->new(
+    ...
+    num_random => 5,
+  );
 
 =head1 PRIVATE ATTRIBUTES
 
