@@ -359,17 +359,27 @@ Defaults to 8. Must be no lower than 4.
 
 =head2 C<_preserve>
 
+Internal boolean for tracking the _preserve state.
+
 =head2 C<_dir>
+
+Internal File::Tempdir path.
 
 =head1 PRIVATE METHODS
 
 =head2 C<_build__dir>
 
+Initializer for _dir which creates a temporary directory based on the passed parameters.
+
 =head1 PRIVATE FUNCTIONS
 
 =head2 C<_clean_pkg>
 
+Scrape garbage out of the 'package' field for use in filesystem tokens.
+
 =head2 C<_clean_ver>
+
+Scrape garbage out of versions for use in filesystem tokens.
 
 =head1 AUTHOR
 
