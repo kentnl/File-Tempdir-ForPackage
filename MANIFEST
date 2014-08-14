@@ -12,10 +12,12 @@ README
 dist.ini
 dist.ini.meta
 lib/File/Tempdir/ForPackage.pm
+maint/perlcritic.rc.gen.pl
 misc/Changes.deps
 misc/Changes.deps.all
 misc/Changes.deps.dev
 misc/Changes.deps.opt
+misc/perlcritic.deps
 perlcritic.rc
 t/00-compile/lib_File_Tempdir_ForPackage_pm.t
 t/00-report-prereqs.dd
