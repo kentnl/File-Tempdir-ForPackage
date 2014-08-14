@@ -63,6 +63,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
 
  [Added / runtime requires]
  - MooX::Lsub
+ - Path::Tiny
  - utf8
 
  [Added / test recommends]
@@ -96,6 +97,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
 
  [Removed / runtime requires]
+ - File::Path
  - Sub::Quote
 
  [Removed / test requires]

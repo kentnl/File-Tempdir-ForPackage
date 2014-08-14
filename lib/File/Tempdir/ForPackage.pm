@@ -33,88 +33,6 @@ use File::Temp qw();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 lsub package => sub { scalar [ caller(1) ]->[0] };
 
 
@@ -193,7 +111,6 @@ has '_preserve' => ( is => rw =>, init_arg => 'preserve', lazy => 1, default => 
 
 
 has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
-
 
 
 
@@ -370,6 +287,89 @@ sub DEMOLISH {
 }
 
 no Moo;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 1;
 
