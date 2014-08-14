@@ -105,8 +105,8 @@ METHODS
     Thus:
 
       $dir->preserve(1);
-      for( 1..10 ){ 
-        $dir->run_once_in(sub{ 
+      for( 1..10 ){
+        $dir->run_once_in(sub{
 
         });
       }

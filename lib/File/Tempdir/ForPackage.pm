@@ -451,8 +451,8 @@ regardless of this setting. All this setting will do, when set, will prevent eac
 Thus:
 
   $dir->preserve(1);
-  for( 1..10 ){ 
-    $dir->run_once_in(sub{ 
+  for( 1..10 ){
+    $dir->run_once_in(sub{
 
     });
   }
