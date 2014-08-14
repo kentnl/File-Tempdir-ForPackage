@@ -11,6 +11,7 @@ our $VERSION = '1.000000';
 
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
+use Carp qw( croak );
 use Moo qw( has );
 use Path::Tiny;
 use File::Temp qw();
@@ -93,7 +94,7 @@ has num_random     => (
   is  => 'ro',
   isa => sub {
     return if $_[0] >= File::Temp::MINX();
-    die "num_random ( $_[0] ) must be >= " . File::Temp::MINX();
+    croak( "num_random ( $_[0] ) must be >= " . File::Temp::MINX() );
   },
   default => sub { 8 },
 );

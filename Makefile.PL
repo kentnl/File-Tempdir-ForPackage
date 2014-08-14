@@ -20,6 +20,7 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "File::Tempdir::ForPackage",
   "PREREQ_PM" => {
+    "Carp" => 0,
     "File::Temp" => 0,
     "File::pushd" => 0,
     "Moo" => 0,
@@ -41,6 +42,7 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Carp" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
   "File::Temp" => 0,

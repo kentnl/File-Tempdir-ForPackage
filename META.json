@@ -81,6 +81,7 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
             "File::Temp" : "0",
             "File::pushd" : "0",
             "Moo" : "0",
@@ -126,6 +127,7 @@
    "x_BuiltWith" : {
       "modules" : {
          "CPAN::Meta" : "2.142060",
+         "Carp" : "1.34",
          "Dist::Zilla::App::Command::bakeini" : "0.001001",
          "Dist::Zilla::Plugin::Authority" : "1.006",
          "Dist::Zilla::Plugin::AutoPrereqs" : "5.020",
