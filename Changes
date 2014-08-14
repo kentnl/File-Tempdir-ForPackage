@@ -6,7 +6,7 @@ Release history for File-Tempdir-ForPackage
  - build: -1
  - configure: +1 -1 (recommends: +1)
  - develop: +49 -1 (recommends: -1, suggests: +1 ↑1)
- - runtime: +2 ↓1 -1
+ - runtime: +3 ↓1 -2
  - test: +2 ↓1 -1 (recommends: +3)
 
 0.1.1 2012-07-26T14:43:40Z

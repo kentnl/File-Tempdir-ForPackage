@@ -13,9 +13,8 @@ our $VERSION = '1.000000';
 
 use Moo qw( has );
 use MooX::Lsub qw( lsub );
-
-require File::Path;
-require File::Temp;
+use Path::Tiny;
+use File::Temp qw();
 
 =head1 DESCRIPTION
 
@@ -185,7 +184,7 @@ Internal boolean for tracking the _preserve state.
 
 =cut
 
-has _preserve => ( is => 'rw', default => sub { undef } );
+has '_preserve' => ( is => rw =>, init_arg => 'preserve', lazy => 1, default => sub { 0 } );
 
 =p_attr C<_dir>
 
@@ -219,22 +218,17 @@ Will create 10 temporary directories on your filesystem and not reap them.
 
 =cut
 
+
 sub preserve {
-    my ( $self, @args ) = @_;
-    if ( not @args ) {
-        $self->_preserve(1);
-        return 1;
-    }
-    else {
-        if ( not $args[0] ) {
-            $self->_preserve(0);
-            return;
-        }
-        else {
-            $self->_preserve(1);
-            return 1;
-        }
-    }
+  my ( $self, @args ) = @_;
+  if ( @args and not $args[0] ) {
+    $self->_preserve(0);
+    $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(1);
+    return;
+  }
+  $self->_preserve(1);
+  $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  return 1;
 }
 
 =p_function C<_clean_pkg>
@@ -288,8 +282,11 @@ sub _build__dir {
     }
     $template .= q{-} . ( 'X' x $self->num_random );
 
-    my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
-    return $dir;
+  my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
+  if ( $self->_preserve ) {
+    $dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  }
+  return $dir;
 }
 
 =method C<dir>
@@ -322,10 +319,6 @@ re-initialization next time it is needed. Just C<dir> is not reaped.
 sub cleanse {
     my ($self) = shift;
     return $self unless $self->_has_dir;
-    if ( not $self->_preserve ) {
-        require File::Path;
-        File::Path::rmtree( $self->_dir, 0, 0 );
-    }
     $self->_clear_dir;
     return $self;
 }
