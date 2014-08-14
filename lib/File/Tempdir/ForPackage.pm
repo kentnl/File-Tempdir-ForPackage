@@ -2,7 +2,9 @@ use strict;
 use warnings;
 
 package File::Tempdir::ForPackage;
-$File::Tempdir::ForPackage::VERSION = '0.1.2';
+
+our $VERSION = '1.000000';
+
 # ABSTRACT: Easy temporary directories associated with packages.
 
 use Moo;
@@ -382,7 +384,7 @@ File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 =head1 VERSION
 
-version 0.1.2
+version 1.000000
 
 =head1 DESCRIPTION
 

@@ -18,7 +18,7 @@ name: File-Tempdir-ForPackage
 provides:
   File::Tempdir::ForPackage:
     file: lib/File/Tempdir/ForPackage.pm
-    version: v0.1.2
+    version: '1.000000'
 requires:
   File::Path: '0'
   File::Temp: '0'
@@ -32,13 +32,14 @@ resources:
   bugtracker: https://github.com/kentfredric/File-Tempdir-ForPackage/issues
   homepage: https://github.com/kentfredric/File-Tempdir-ForPackage
   repository: https://github.com/kentfredric/File-Tempdir-ForPackage.git
-version: 0.1.2
+version: '1.000000'
 x_BuiltWith:
   modules:
     CPAN::Meta: '2.142060'
     Dist::Zilla::App::Command::bakeini: '0.001001'
     Dist::Zilla::Plugin::Authority: '1.006'
     Dist::Zilla::Plugin::AutoPrereqs: '5.020'
+    Dist::Zilla::Plugin::BumpVersionAfterRelease: '0.002'
     Dist::Zilla::Plugin::ConfirmRelease: '5.020'
     Dist::Zilla::Plugin::EOLTests: '0.02'
     Dist::Zilla::Plugin::Git::Check: '2.023'
@@ -47,7 +48,6 @@ x_BuiltWith:
     Dist::Zilla::Plugin::Git::Contributors: '0.005'
     Dist::Zilla::Plugin::Git::GatherDir: '2.023'
     Dist::Zilla::Plugin::Git::NextRelease: '0.002011'
-    Dist::Zilla::Plugin::Git::NextVersion::Sanitized: '0.002000'
     Dist::Zilla::Plugin::Git::Tag: '2.023'
     Dist::Zilla::Plugin::GithubMeta: '0.46'
     Dist::Zilla::Plugin::License: '5.020'
@@ -61,7 +61,6 @@ x_BuiltWith:
     Dist::Zilla::Plugin::MetaTests: '5.020'
     Dist::Zilla::Plugin::MetaYAML: '5.020'
     Dist::Zilla::Plugin::MinimumPerl: '1.003'
-    Dist::Zilla::Plugin::PkgVersion: '5.020'
     Dist::Zilla::Plugin::PodCoverageTests: '5.020'
     Dist::Zilla::Plugin::PodSyntaxTests: '5.020'
     Dist::Zilla::Plugin::PodWeaver: '4.005'
@@ -69,6 +68,7 @@ x_BuiltWith:
     Dist::Zilla::Plugin::Prereqs::Recommend::MatchInstalled: '0.002000'
     Dist::Zilla::Plugin::ReadmeAnyFromPod: '0.142250'
     Dist::Zilla::Plugin::ReadmeFromPod: '0.21'
+    Dist::Zilla::Plugin::RewriteVersion::Sanitized: '0.001002'
     Dist::Zilla::Plugin::RunExtraTests: '0.022'
     Dist::Zilla::Plugin::Test::CPAN::Changes: '0.008'
     Dist::Zilla::Plugin::Test::Compile::PerFile: '0.002001'
@@ -113,20 +113,6 @@ x_Dist_Zilla:
   perl:
     version: '5.021001'
   plugins:
-    -
-      class: Dist::Zilla::Plugin::Git::NextVersion::Sanitized
-      config:
-        Dist::Zilla::Plugin::Git::NextVersion:
-          first_version: '0.001000'
-          version_by_branch: '0'
-          version_regexp: (?^u:^(.*)-source$)
-        Dist::Zilla::Role::Git::Repo:
-          repo_root: .
-        Dist::Zilla::Role::Version::Sanitize:
-          mantissa: '6'
-          normal_form: normal_3
-      name: '@Author::KENTNL/Git::NextVersion::Sanitized'
-      version: '0.002000'
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::KENTNL/MetaConfig'
@@ -255,9 +241,13 @@ x_Dist_Zilla:
       name: '@Author::KENTNL/ManifestSkip'
       version: '5.020'
     -
-      class: Dist::Zilla::Plugin::PkgVersion
-      name: '@Author::KENTNL/PkgVersion'
-      version: '5.020'
+      class: Dist::Zilla::Plugin::RewriteVersion::Sanitized
+      config:
+        Dist::Zilla::Role::Version::Sanitize:
+          mantissa: '6'
+          normal_form: numify
+      name: '@Author::KENTNL/RewriteVersion::Sanitized'
+      version: '0.001002'
     -
       class: Dist::Zilla::Plugin::PodWeaver
       config:
@@ -432,7 +422,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: '0'
-          tag: 0.1.2-source
+          tag: 1.000000-source
           tag_format: '%v-source'
           tag_message: v%v
           time_zone: local
@@ -444,6 +434,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Git::NextRelease
       name: '@Author::KENTNL/Git::NextRelease'
       version: '0.002011'
+    -
+      class: Dist::Zilla::Plugin::BumpVersionAfterRelease
+      name: '@Author::KENTNL/BumpVersionAfterRelease'
+      version: '0.002'
     -
       class: Dist::Zilla::Plugin::Git::Commit
       config:
@@ -482,7 +476,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: releases
           signed: '0'
-          tag: 0.1.2
+          tag: '1.000000'
           tag_format: '%v'
           tag_message: v%v
           time_zone: local
