@@ -15,8 +15,10 @@ use Carp qw( croak );
 use Moo qw( has );
 use Path::Tiny;
 use File::Temp qw();
+## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
 use constant MINX => File::Temp::MINX;
 use constant TEMP => Path::Tiny::TEMP;
+## use critic
 
 
 
