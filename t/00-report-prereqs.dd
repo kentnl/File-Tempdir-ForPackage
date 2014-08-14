@@ -71,8 +71,9 @@ do { my $x = {
                                       'File::pushd' => '0',
                                       'Moo' => '0',
                                       'Sub::Quote' => '0',
-                                      'perl' => '5.006',
+                                      'perl' => '5.008',
                                       'strict' => '0',
+                                      'utf8' => '0',
                                       'warnings' => '0'
                                     }
                     },
