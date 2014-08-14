@@ -6,7 +6,6 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
 
  [Added / runtime requires]
  - Carp
- - Path::Tiny
  - constant
 
  [Added / test requires]

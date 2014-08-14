@@ -63,7 +63,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
 
  [Added / runtime requires]
  - Carp
- - Path::Tiny
  - constant
 
  [Added / test recommends]
