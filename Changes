@@ -1,6 +1,6 @@
 Release history for File-Tempdir-ForPackage
 
-1.000000 2014-08-14T07:54:55Z
+1.000000 2014-08-14T08:19:50Z
  [00 Major]
  - Changes that will affect hand operated downstreams.
 
@@ -30,7 +30,7 @@ Release history for File-Tempdir-ForPackage
  - build: -1
  - configure: +1 -1 (recommends: +1)
  - develop: +49 -1 (recommends: -1, suggests: +1 ↑1)
- - runtime: +4 ↓1 -2
+ - runtime: +3 ↓1 -2
  - test: +2 ↓1 -1 (recommends: +3)
 
 0.1.1 2012-07-26T14:43:40Z
