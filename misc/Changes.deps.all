@@ -45,7 +45,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::Plugin::TestRelease
  - Dist::Zilla::Plugin::Twitter
  - Dist::Zilla::Plugin::UploadToCPAN
- - Dist::Zilla::PluginBundle::Author::KENTNL 2.017000
  - Pod::Coverage::TrustPod
  - Test::CPAN::Changes 0.19
  - Test::CPAN::Meta
@@ -54,7 +53,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Test::Pod::Coverage 1.08
 
  [Added / develop suggests]
- - Dist::Zilla::PluginBundle::Author::KENTNL::Lite v1.3.0
+ - Dist::Zilla::App::Command::bakeini 0.001001
 
  [Added / test recommends]
  - CPAN::Meta 2.120900
@@ -69,6 +68,9 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  [Changed / configure requires]
  - Module::Build 0.4001 → 0.4206
 
+ [Changed / develop suggests]
+ - Dist::Zilla::PluginBundle::Author::KENTNL v1.4.2 → 2.017000
+
  [Changed / runtime requires]
  - perl v5.10.0 → 5.006
 
@@ -80,9 +82,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
 
  [Removed / develop requires]
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
-
- [Removed / develop suggests]
- - Dist::Zilla::PluginBundle::Author::KENTNL v1.4.2
 
  [Removed / test requires]
  - File::Find

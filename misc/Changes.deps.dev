@@ -45,7 +45,6 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Dist::Zilla::Plugin::TestRelease
  - Dist::Zilla::Plugin::Twitter
  - Dist::Zilla::Plugin::UploadToCPAN
- - Dist::Zilla::PluginBundle::Author::KENTNL 2.017000
  - Pod::Coverage::TrustPod
  - Test::CPAN::Changes 0.19
  - Test::CPAN::Meta
@@ -54,16 +53,16 @@ This file contains changes to DEVELOPMENT dependencies only ( both REQUIRED and 
  - Test::Pod::Coverage 1.08
 
  [Added / develop suggests]
- - Dist::Zilla::PluginBundle::Author::KENTNL::Lite v1.3.0
+ - Dist::Zilla::App::Command::bakeini 0.001001
+
+ [Changed / develop suggests]
+ - Dist::Zilla::PluginBundle::Author::KENTNL v1.4.2 → 2.017000
 
  [Removed / develop recommends]
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite v1.3.0
 
  [Removed / develop requires]
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
-
- [Removed / develop suggests]
- - Dist::Zilla::PluginBundle::Author::KENTNL v1.4.2
 
 0.1.1 2012-07-26T14:43:40Z
 
