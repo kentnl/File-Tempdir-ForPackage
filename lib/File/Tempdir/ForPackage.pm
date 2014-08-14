@@ -217,32 +217,7 @@ Return a path string to the created temporary directory
 
 sub dir {
   my ($self) = shift;
-  return $self->_dir;
-}
-
-=method C<cleanse>
-
-Detach the physical file system directory from being connected to this object.
-
-If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
-will be reset, ready to be re-initialized the next time it is needed.
-
-If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for
-re-initialization next time it is needed. Just C<dir> is not reaped.
-
-  $instance->cleanse();
- 
-=cut
-
-sub cleanse {
-  my ($self) = shift;
-  return $self unless $self->_has_dir;
-
-  #if ( not $self->_preserve ) {
-  #  $self->_dir->remove_tree();
-  #}
-  $self->_clear_dir;
-  return $self;
+  return $self->_dir . '';
 }
 
 =method C<run_once_in>
@@ -271,21 +246,8 @@ sub run_once_in {
   }
 
   # Dir POP.
-  $self->cleanse;
+  $self->_clear_dir;
   return $self;
-}
-
-=method C<DEMOLISH>
-
-Hook to trigger automatic cleansing when the object is lost out of scope, 
-as long as C<preserve> is unset.
-
-=cut
-
-sub DEMOLISH {
-  my ( $self, ) = @_;
-  $self->cleanse;
-  return;
 }
 
 no Moo;

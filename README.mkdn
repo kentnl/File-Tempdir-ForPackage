@@ -109,18 +109,6 @@ Return a path string to the created temporary directory
 
     my $path = $instance->dir
 
-## `cleanse`
-
-Detach the physical file system directory from being connected to this object.
-
-If `preserve` is not set, then this will mean `dir` will be reaped, and the `dir` attribute
-will be reset, ready to be re-initialized the next time it is needed.
-
-If `preserve` is set, then from the outside codes persective its basically the same, `dir` is reset, waiting for
-re-initialization next time it is needed. Just `dir` is not reaped.
-
-    $instance->cleanse();
-
 ## `run_once_in`
 
 Vivifies a temporary directory for the scope of the passed sub.
@@ -133,11 +121,6 @@ Vivifies a temporary directory for the scope of the passed sub.
     # temporary directory is reset, and possibly reaped.
 
 You can call this method repeatedly, and you'll get a seperate temporary directory each time.
-
-## `DEMOLISH`
-
-Hook to trigger automatic cleansing when the object is lost out of scope, 
-as long as `preserve` is unset.
 
 # ATTRIBUTES
 
