@@ -358,7 +358,7 @@ version 1.000000
 
 =head1 DESCRIPTION
 
-This is mostly an interface wrapper for File::Temp::tempdir, stealing code from File::Tempdir;
+This is mostly an interface wrapper for C<File::Temp::tempdir>, stealing code from C<File::Tempdir>;
 
 =over 4
 

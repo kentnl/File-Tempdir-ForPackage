@@ -6,8 +6,8 @@ VERSION
     version 1.000000
 
 DESCRIPTION
-    This is mostly an interface wrapper for File::Temp::tempdir, stealing
-    code from File::Tempdir;
+    This is mostly an interface wrapper for "File::Temp::tempdir", stealing
+    code from "File::Tempdir";
 
     *   I constantly forget how File::Tempdir works
 
