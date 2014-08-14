@@ -4,7 +4,7 @@ File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 # VERSION
 
-version 1.000000
+version 1.000001
 
 # DESCRIPTION
 
