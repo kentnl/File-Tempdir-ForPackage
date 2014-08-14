@@ -28,7 +28,6 @@ requires:
   constant: '0'
   perl: '5.008'
   strict: '0'
-  utf8: '0'
   warnings: '0'
 resources:
   bugtracker: https://github.com/kentnl/File-Tempdir-ForPackage/issues
@@ -99,7 +98,6 @@ x_BuiltWith:
     Test::Pod::Coverage: '1.10'
     constant: '1.31'
     strict: '1.08'
-    utf8: '1.14'
     warnings: '1.24'
   perl:
     original: v5.21.1
