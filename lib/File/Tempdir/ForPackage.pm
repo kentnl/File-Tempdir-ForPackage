@@ -218,7 +218,6 @@ Will create 10 temporary directories on your filesystem and not reap them.
 
 =cut
 
-
 sub preserve {
   my ( $self, @args ) = @_;
   if ( @args and not $args[0] ) {
@@ -238,10 +237,10 @@ Scrape garbage out of the 'package' field for use in filesystem tokens.
 =cut
 
 sub _clean_pkg {
-    my ($package) = @_;
-    $package =~ s/::/-/gsmx;
-    $package =~ s/[^\w-]+/_/gsmx;
-    return $package;
+  my ($package) = @_;
+  $package =~ s/::/-/gsmx;
+  $package =~ s/[^\w-]+/_/gsmx;
+  return $package;
 }
 
 =p_function C<_clean_ver>
@@ -251,10 +250,10 @@ Scrape garbage out of versions for use in filesystem tokens.
 =cut
 
 sub _clean_ver {
-    my ($ver) = @_;
-    return 'versionundef' if not defined $ver;
-    $ver =~ s/[^v\d_.]+/_/gsmx;
-    return $ver;
+  my ($ver) = @_;
+  return 'versionundef' if not defined $ver;
+  $ver =~ s/[^v\d_.]+/_/gsmx;
+  return $ver;
 }
 
 =p_method C<_build__dir>
@@ -264,23 +263,22 @@ Initializer for _dir which creates a temporary directory based on the passed par
 =cut
 
 sub _build__dir {
-    my ($self) = shift;
-    require File::Temp;
+  my ($self) = shift;
 
-    my $template = q{perl-};
-    $template .= _clean_pkg( $self->package );
+  my $template = q{perl-};
+  $template .= _clean_pkg( $self->package );
 
-    if ( $self->with_version ) {
-        $template .= q{-} . _clean_ver( $self->package->VERSION );
-    }
-    if ( $self->with_timestamp ) {
-        $template .= q{-} . time;
-    }
-    if ( $self->with_pid ) {
-        ## no critic ( ProhibitPunctuationVars )
-        $template .= q{-} . $$;
-    }
-    $template .= q{-} . ( 'X' x $self->num_random );
+  if ( $self->with_version ) {
+    $template .= q{-} . _clean_ver( $self->package->VERSION );
+  }
+  if ( $self->with_timestamp ) {
+    $template .= q{-} . time;
+  }
+  if ( $self->with_pid ) {
+    ## no critic ( ProhibitPunctuationVars )
+    $template .= q{-} . $$;
+  }
+  $template .= q{-} . ( 'X' x $self->num_random );
 
   my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
   if ( $self->_preserve ) {
@@ -298,8 +296,8 @@ Return a path string to the created temporary directory
 =cut
 
 sub dir {
-    my ($self) = shift;
-    return $self->_dir;
+  my ($self) = shift;
+  return $self->_dir;
 }
 
 =method C<cleanse>
@@ -317,10 +315,14 @@ re-initialization next time it is needed. Just C<dir> is not reaped.
 =cut
 
 sub cleanse {
-    my ($self) = shift;
-    return $self unless $self->_has_dir;
-    $self->_clear_dir;
-    return $self;
+  my ($self) = shift;
+  return $self unless $self->_has_dir;
+
+  #if ( not $self->_preserve ) {
+  #  $self->_dir->remove_tree();
+  #}
+  $self->_clear_dir;
+  return $self;
 }
 
 =method C<run_once_in>
@@ -339,18 +341,18 @@ You can call this method repeatedly, and you'll get a seperate temporary directo
 =cut
 
 sub run_once_in {
-    my ( $self, $options, $code ) = @_;
-    $code = $options unless defined $code;
-    require File::pushd;
-    {
+  my ( $self, $options, $code ) = @_;
+  $code = $options unless defined $code;
+  require File::pushd;
+  {
     ## no critic (Variables::ProhibitUnusedVarsStricter)
-        my $marker = File::pushd::pushd( $self->dir );
-        $code->( $self->dir );
-    }
+    my $marker = File::pushd::pushd( $self->dir );
+    $code->( $self->dir );
+  }
 
-    # Dir POP.
-    $self->cleanse;
-    return $self;
+  # Dir POP.
+  $self->cleanse;
+  return $self;
 }
 
 =method C<DEMOLISH>
@@ -362,8 +364,8 @@ as long as C<preserve> is unset.
 
 sub DEMOLISH {
   my ( $self, ) = @_;
-    $self->cleanse;
-    return;
+  $self->cleanse;
+  return;
 }
 
 no Moo;
