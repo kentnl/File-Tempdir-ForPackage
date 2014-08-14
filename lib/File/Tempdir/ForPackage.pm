@@ -7,6 +7,8 @@ our $VERSION = '1.000000';
 
 # ABSTRACT: Easy temporary directories associated with packages.
 
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
+
 use Moo;
 use Sub::Quote qw( quote_sub );
 
