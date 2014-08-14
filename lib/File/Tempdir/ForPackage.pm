@@ -12,7 +12,6 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moo qw( has );
-use MooX::Lsub qw( lsub );
 use Path::Tiny;
 use File::Temp qw();
 
@@ -32,13 +31,11 @@ use File::Temp qw();
 
 
 
-
-lsub package => sub { scalar [ caller(1) ]->[0] };
-
-
-
-
-
+has package => (
+  is   => ro =>,
+  lazy => 1,
+  default => sub { scalar [ caller(1) ]->[0] }
+);
 
 
 
@@ -84,10 +81,15 @@ lsub package => sub { scalar [ caller(1) ]->[0] };
 
 
 
-lsub with_version   => sub { undef };
-lsub with_timestamp => sub { undef };
-lsub with_pid       => sub { undef };
-has num_random      => (
+
+
+
+
+
+has with_version   => ( is => ro =>, lazy => 1, default => sub { undef } );
+has with_timestamp => ( is => ro =>, lazy => 1, default => sub { undef } );
+has with_pid       => ( is => ro =>, lazy => 1, default => sub { undef } );
+has num_random     => (
   is  => 'ro',
   isa => sub {
     return if $_[0] >= File::Temp::MINX();
@@ -215,32 +217,7 @@ sub _build__dir {
 
 sub dir {
   my ($self) = shift;
-  return $self->_dir;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-sub cleanse {
-  my ($self) = shift;
-  return $self unless $self->_has_dir;
-
-  #if ( not $self->_preserve ) {
-  #  $self->_dir->remove_tree();
-  #}
-  $self->_clear_dir;
-  return $self;
+  return $self->_dir . '';
 }
 
 
@@ -269,21 +246,8 @@ sub run_once_in {
   }
 
   # Dir POP.
-  $self->cleanse;
+  $self->_clear_dir;
   return $self;
-}
-
-
-
-
-
-
-
-
-sub DEMOLISH {
-  my ( $self, ) = @_;
-  $self->cleanse;
-  return;
 }
 
 no Moo;
@@ -372,6 +336,7 @@ no Moo;
 
 
 1;
+## Please see file perltidy.ERR
 
 __END__
 
@@ -496,18 +461,6 @@ Return a path string to the created temporary directory
 
   my $path = $instance->dir
 
-=head2 C<cleanse>
-
-Detach the physical file system directory from being connected to this object.
-
-If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
-will be reset, ready to be re-initialized the next time it is needed.
-
-If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for
-re-initialization next time it is needed. Just C<dir> is not reaped.
-
-  $instance->cleanse();
-
 =head2 C<run_once_in>
 
 Vivifies a temporary directory for the scope of the passed sub.
@@ -520,11 +473,6 @@ Vivifies a temporary directory for the scope of the passed sub.
   # temporary directory is reset, and possibly reaped.
 
 You can call this method repeatedly, and you'll get a seperate temporary directory each time.
-
-=head2 C<DEMOLISH>
-
-Hook to trigger automatic cleansing when the object is lost out of scope, 
-as long as C<preserve> is unset.
 
 =head1 ATTRIBUTES
 
