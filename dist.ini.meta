@@ -12,6 +12,8 @@ copyright_holder = Kent Fredric <kentfredric@gmail.com>
 git_versions      = 1
 twitter_hash_tags = #perl #cpan
 normal_form       = normal_3
+toolkit           = eumm
+toolkit_hardness  = soft
 ; version_major     = 0
 ; version_minor     = 1
 ; the following data denotes when this minor was minted
