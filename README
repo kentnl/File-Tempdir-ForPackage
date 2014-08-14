@@ -3,19 +3,19 @@ NAME
     packages.
 
 VERSION
-    version 0.1.1
+    version 1.000000
 
 DESCRIPTION
-    This is mostly an interface wrapper for File::Temp::tempdir, stealing
-    code from File::Tempdir;
+    This is mostly an interface wrapper for "File::Temp::tempdir", stealing
+    code from "File::Tempdir";
 
-    *   I constantly forget how File::Tempdir works
+    *   I constantly forget how "File::Tempdir" works
 
-    *   I often want a tempdir with the name of the package working with it
-        enshrined in the path
+    *   I often want a "tempdir" with the name of the package working with
+        it enshrined in the path
 
     *   I constantly forget the magic glue syntax to get a folder inside a
-        System Tempdir with a custom prefix and a user defined length of
+        system "tempdir" with a custom prefix and a user defined length of
         random characters.
 
     And this is designed to solve this simply.
@@ -27,8 +27,8 @@ DESCRIPTION
 
     do shit in `$dir` $dir on Linux will be something like
     /tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/ so if it crashes
-    and leaves a tempdir behind, you will know who left that tempdir behind
-    and have a way of cleaning it up.
+    and leaves a "tempdir" behind, you will know who left that "tempdir"
+    behind and have a way of cleaning it up.
 
     When $tempdir is destroyed, $dir will be cleaned;
 
@@ -39,10 +39,11 @@ DESCRIPTION
       });
 
     Is there for people who don't trust scope auto-cleansing and want to
-    know when the dir is reaped.
+    know when the directory is reaped.
 
     Additionally, this code can be run in a tight loop creating and
-    destroying lots of similary named tempdirs without risk of conflict.
+    destroying lots of similarly named temporary directories without risk of
+    conflict.
 
       for my $i ( 0 .. 30  ) {
         $dir->run_once_in(sub {
@@ -89,48 +90,34 @@ DESCRIPTION
 
 METHODS
   "preserve"
-    Toggle the preservation of the tempdir after it goes out of scope or is
-    otherwise indicated for cleaning.
+    Toggle the preservation of the "tempdir" after it goes out of scope or
+    is otherwise indicated for cleaning.
 
       $instance->preserve(); # tempdir is now preserved after cleanup
       $instance->preserve(0); # tempdir is purged at cleanup
       $instance->preserve(1); # tempdir is preserved after cleanup
 
-    Note that in "run_once_in", a new tempdir is created and set for this
+    Note that in "run_once_in", a new "tempdir" is created and set for this
     modules consumption for each run of "run_once_in", regardless of this
     setting. All this setting will do, when set, will prevent each instance
-    being reaped from the filesystem.
+    being reaped from the file system.
 
     Thus:
 
       $dir->preserve(1);
-      for( 1..10 ){ 
-        $dir->run_once_in(sub{ 
+      for( 1..10 ){
+        $dir->run_once_in(sub{
 
         });
       }
 
-    Will create 10 temporary directories on your filesystem and not reap
+    Will create 10 temporary directories on your file system and not reap
     them.
 
   "dir"
     Return a path string to the created temporary directory
 
       my $path = $instance->dir
-
-  "cleanse"
-    Detach the physical file system directory from being connected to this
-    object.
-
-    If "preserve" is not set, then this will mean "dir" will be reaped, and
-    the "dir" attribute will be reset, ready to be re-initialized the next
-    time it is needed.
-
-    If "preserve" is set, then from the outside codes persective its
-    basically the same, "dir" is reset, waiting for re-initialization next
-    time it is needed. Just "dir" is not reaped.
-
-      $instance->cleanse();
 
   "run_once_in"
     Vivifies a temporary directory for the scope of the passed sub.
@@ -142,17 +129,13 @@ METHODS
 
       # temporary directory is reset, and possibly reaped.
 
-    You can call this method repeatedly, and you'll get a seperate temporary
+    You can call this method repeatedly, and you'll get a separate temporary
     directory each time.
-
-  "DEMOLISH"
-    Hook to trigger automatic cleansing when the object is lost out of
-    scope, as long as "preserve" is unset.
 
 ATTRIBUTES
   "package"
     The package to report as being associated with. This really can be any
-    string, as its sanitised and then used as a path part.
+    string, as its sanitized and then used as a path part.
 
     If not specified, will inspect "caller"
 
@@ -165,7 +148,7 @@ ATTRIBUTES
     package name will be helpful.
 
   "with_version"
-    Include the version from "package->VERSION()" in the tempdir path.
+    Include the version from "package->VERSION()" in the "tempdir" path.
 
     Defaults to false.
 
@@ -175,7 +158,7 @@ ATTRIBUTES
       );
 
   "with_timestamp"
-    Include "time" in the tempdir path.
+    Include "time" in the "tempdir" path.
 
     Defaults to false.
 
@@ -185,7 +168,7 @@ ATTRIBUTES
       );
 
   "with_pid"
-    Include $$ in the tempdir path.
+    Include $$ in the "tempdir" path.
 
     Defaults to false.
 
@@ -195,7 +178,7 @@ ATTRIBUTES
       );
 
   "num_random"
-    The number of characters of randomness to include in the tempdir
+    The number of characters of randomness to include in the "tempdir"
     template.
 
     Defaults to 8. Must be no lower than 4.
@@ -207,28 +190,28 @@ ATTRIBUTES
 
 PRIVATE ATTRIBUTES
   "_preserve"
-    Internal boolean for tracking the _preserve state.
+    Internal "boolean" for tracking the _preserve state.
 
   "_dir"
-    Internal File::Tempdir path.
+    Internal "File::Tempdir" path.
 
 PRIVATE METHODS
   "_build__dir"
-    Initializer for _dir which creates a temporary directory based on the
+    Builder method for _dir which creates a temporary directory based on the
     passed parameters.
 
 PRIVATE FUNCTIONS
   "_clean_pkg"
-    Scrape garbage out of the 'package' field for use in filesystem tokens.
+    Scrape garbage out of the 'package' field for use in file system tokens.
 
   "_clean_ver"
-    Scrape garbage out of versions for use in filesystem tokens.
+    Scrape garbage out of versions for use in file system tokens.
 
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Kent Fredric
+    This software is copyright (c) 2014 by Kent Fredric
     <kentfredric@gmail.com>.
 
     This is free software; you can redistribute it and/or modify it under
