@@ -197,7 +197,7 @@ PRIVATE ATTRIBUTES
 
 PRIVATE METHODS
   "_build__dir"
-    Initialiser for _dir which creates a temporary directory based on the
+    Builder method for _dir which creates a temporary directory based on the
     passed parameters.
 
 PRIVATE FUNCTIONS

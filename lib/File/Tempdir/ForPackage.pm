@@ -552,7 +552,7 @@ Internal C<File::Tempdir> path.
 
 =head2 C<_build__dir>
 
-Initialiser for _dir which creates a temporary directory based on the passed parameters.
+Builder method for _dir which creates a temporary directory based on the passed parameters.
 
 =head1 PRIVATE FUNCTIONS
 
