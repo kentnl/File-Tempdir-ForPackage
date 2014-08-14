@@ -350,6 +350,7 @@ sub run_once_in {
     $code = $options unless defined $code;
     require File::pushd;
     {
+    ## no critic (Variables::ProhibitUnusedVarsStricter)
         my $marker = File::pushd::pushd( $self->dir );
         $code->( $self->dir );
     }
@@ -367,7 +368,7 @@ as long as C<preserve> is unset.
 =cut
 
 sub DEMOLISH {
-    my ( $self, $in_g_d ) = @_;
+  my ( $self, ) = @_;
     $self->cleanse;
     return;
 }
