@@ -15,6 +15,10 @@ use Carp qw( croak );
 use Moo qw( has );
 use Path::Tiny;
 use File::Temp qw();
+## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
+use constant MINX => File::Temp::MINX;
+use constant TEMP => Path::Tiny::TEMP;
+## use critic
 
 =attr C<package>
 
@@ -35,7 +39,7 @@ Note: If you want C<with_version> to work properly, specifying a valid package n
 has package => (
   is   => ro =>,
   lazy => 1,
-  default => sub { scalar [ caller(1) ]->[0] }
+  default => sub { scalar [ caller 1 ]->[0] },
 );
 
 =attr C<with_version>
@@ -93,8 +97,8 @@ has with_pid       => ( is => ro =>, lazy => 1, default => sub { undef } );
 has num_random     => (
   is  => 'ro',
   isa => sub {
-    return if $_[0] >= File::Temp::MINX();
-    croak( "num_random ( $_[0] ) must be >= " . File::Temp::MINX() );
+    return if $_[0] >= MINX();
+    croak( "num_random ( $_[0] ) must be >= " . MINX() );
   },
   default => sub { 8 },
 );
@@ -203,7 +207,7 @@ sub _build__dir {
 
   my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
   if ( $self->_preserve ) {
-    $dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+    $dir->[TEMP]->unlink_on_destroy(0);
   }
   return $dir;
 }
@@ -218,7 +222,7 @@ Return a path string to the created temporary directory
 
 sub dir {
   my ($self) = shift;
-  return $self->_dir . '';
+  return $self->_dir . q[];
 }
 
 =method C<run_once_in>
