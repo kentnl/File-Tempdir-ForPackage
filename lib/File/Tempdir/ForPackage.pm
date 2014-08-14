@@ -12,10 +12,8 @@ our $VERSION = '1.000000';
 # AUTHORITY
 
 use Moo qw( has );
-use MooX::Lsub qw( lsub );
 use Path::Tiny;
 use File::Temp qw();
-
 
 =attr C<package>
 
@@ -33,7 +31,11 @@ Note: If you want C<with_version> to work properly, specifying a valid package n
 
 =cut
 
-lsub package => sub { scalar [ caller(1) ]->[0] };
+has package => (
+  is   => ro =>,
+  lazy => 1,
+  default => sub { scalar [ caller(1) ]->[0] }
+);
 
 =attr C<with_version>
 
@@ -84,10 +86,10 @@ Defaults to 8. Must be no lower than 4.
 
 =cut
 
-lsub with_version   => sub { undef };
-lsub with_timestamp => sub { undef };
-lsub with_pid       => sub { undef };
-has num_random      => (
+has with_version   => ( is => ro =>, lazy => 1, default => sub { undef } );
+has with_timestamp => ( is => ro =>, lazy => 1, default => sub { undef } );
+has with_pid       => ( is => ro =>, lazy => 1, default => sub { undef } );
+has num_random     => (
   is  => 'ro',
   isa => sub {
     return if $_[0] >= File::Temp::MINX();

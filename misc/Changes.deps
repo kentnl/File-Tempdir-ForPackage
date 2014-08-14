@@ -5,7 +5,6 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  - ExtUtils::MakeMaker
 
  [Added / runtime requires]
- - MooX::Lsub
  - Path::Tiny
  - utf8
 
