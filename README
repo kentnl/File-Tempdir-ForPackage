@@ -111,7 +111,7 @@ METHODS
         });
       }
 
-    Will create 10 temporary directories on your filesystem and not reap
+    Will create 10 temporary directories on your file system and not reap
     them.
 
   "dir"
@@ -202,10 +202,10 @@ PRIVATE METHODS
 
 PRIVATE FUNCTIONS
   "_clean_pkg"
-    Scrape garbage out of the 'package' field for use in filesystem tokens.
+    Scrape garbage out of the 'package' field for use in file system tokens.
 
   "_clean_ver"
-    Scrape garbage out of versions for use in filesystem tokens.
+    Scrape garbage out of versions for use in file system tokens.
 
 AUTHOR
     Kent Fredric <kentfredric@gmail.com>

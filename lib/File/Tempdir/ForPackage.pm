@@ -457,7 +457,7 @@ Thus:
     });
   }
 
-Will create 10 temporary directories on your filesystem and not reap them.
+Will create 10 temporary directories on your file system and not reap them.
 
 =head2 C<dir>
 
@@ -558,11 +558,11 @@ Initializer for _dir which creates a temporary directory based on the passed par
 
 =head2 C<_clean_pkg>
 
-Scrape garbage out of the 'package' field for use in filesystem tokens.
+Scrape garbage out of the 'package' field for use in file system tokens.
 
 =head2 C<_clean_ver>
 
-Scrape garbage out of versions for use in filesystem tokens.
+Scrape garbage out of versions for use in file system tokens.
 
 =head1 AUTHOR
 
