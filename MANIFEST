@@ -9,6 +9,7 @@ META.json
 META.yml
 README
 dist.ini
+dist.ini.meta
 lib/File/Tempdir/ForPackage.pm
 misc/Changes.deps
 misc/Changes.deps.all
