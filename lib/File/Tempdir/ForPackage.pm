@@ -7,6 +7,8 @@ our $VERSION = '1.000000';
 
 # ABSTRACT: Easy temporary directories associated with packages.
 
+# AUTHORITY
+
 use Moo;
 use Sub::Quote qw( quote_sub );
 
