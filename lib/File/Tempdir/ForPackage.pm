@@ -12,8 +12,10 @@ our $VERSION = '1.000000';
 our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moo qw( has );
-use Sub::Quote qw( quote_sub );
+use MooX::Lsub qw( lsub );
 
+require File::Path;
+require File::Temp;
 
 
 
@@ -113,11 +115,8 @@ use Sub::Quote qw( quote_sub );
 
 
 
-has package => (
-  is      => 'ro',
-  default => quote_sub q| scalar [ caller() ]->[0] |,
-);
 
+lsub package => sub { scalar [ caller(1) ]->[0] };
 
 
 
@@ -167,18 +166,17 @@ has package => (
 
 
 
-has with_version   => ( is => 'ro', default => quote_sub q{ undef } );
-has with_timestamp => ( is => 'ro', default => quote_sub q{ undef } );
-has with_pid       => ( is => 'ro', default => quote_sub q{ undef } );
-has num_random     => (
+
+lsub with_version   => sub { undef };
+lsub with_timestamp => sub { undef };
+lsub with_pid       => sub { undef };
+has num_random      => (
   is  => 'ro',
-  isa => (
-    ## no critic ( RequireInterpolationOfMetachars )
-    quote_sub q|require File::Temp;|
-      . q| die "num_random ( $_[0] ) must be >= " . File::Temp::MINX() |
-      . q| if $_[0] < File::Temp::MINX(); |
-  ),
-  default => quote_sub q{ 8 },
+  isa => sub {
+    return if $_[0] >= File::Temp::MINX();
+    die "num_random ( $_[0] ) must be >= " . File::Temp::MINX();
+  },
+  default => sub { 8 },
 );
 
 
@@ -187,7 +185,7 @@ has num_random     => (
 
 
 
-has _preserve => ( is => 'rw', default => quote_sub q{ undef } );
+has _preserve => ( is => 'rw', default => sub { undef } );
 
 
 
@@ -273,7 +271,6 @@ sub _clean_ver {
 
 sub _build__dir {
   my ($self) = shift;
-  require File::Temp;
 
   my $template = q{perl-};
   $template .= _clean_pkg( $self->package );
@@ -320,11 +317,11 @@ sub dir {
 
 
 
+
 sub cleanse {
   my ($self) = shift;
   return $self unless $self->_has_dir;
   if ( not $self->_preserve ) {
-    require File::Path;
     File::Path::rmtree( $self->_dir, 0, 0 );
   }
   $self->_clear_dir;
@@ -508,7 +505,8 @@ Detach the physical file system directory from being connected to this object.
 If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
 will be reset, ready to be re-initialized the next time it is needed.
 
-If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for re-initialization next time it is needed. Just C<dir> is not reaped.
+If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for
+re-initialization next time it is needed. Just C<dir> is not reaped.
 
   $instance->cleanse();
 
