@@ -12,11 +12,9 @@ our $VERSION = '1.000000';
 
 use Carp qw( croak );
 use Moo qw( has );
-use Path::Tiny;
 use File::Temp qw();
 ## no critic (Subroutines::ProhibitCallsToUnexportedSubs)
 use constant MINX => File::Temp::MINX;
-use constant TEMP => Path::Tiny::TEMP;
 ## use critic
 
 =attr C<package>
@@ -146,11 +144,11 @@ sub preserve {
   my ( $self, @args ) = @_;
   if ( @args and not $args[0] ) {
     $self->_preserve(0);
-    $self->_dir->[TEMP]->unlink_on_destroy(1);
+    $self->_dir->unlink_on_destroy(1);
     return;
   }
   $self->_preserve(1);
-  $self->_dir->[TEMP]->unlink_on_destroy(0);
+  $self->_dir->unlink_on_destroy(0);
   return 1;
 }
 
@@ -204,9 +202,9 @@ sub _build__dir {
   }
   $template .= q{-} . ( 'X' x $self->num_random );
 
-  my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
+  my $dir = File::Temp->newdir( TEMPLATE => $template, TMPDIR => 1 );
   if ( $self->_preserve ) {
-    $dir->[TEMP]->unlink_on_destroy(0);
+    $dir->unlink_on_destroy(0);
   }
   return $dir;
 }

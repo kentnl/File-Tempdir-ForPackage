@@ -14,11 +14,7 @@ Release history for File-Tempdir-ForPackage
  - "Latest" deps for toolchain parts are now only "recommended"
  - https://questhub.io/realm/perl/quest/5388cc12bbd0be5b2500011f
 
- [03 Reworked Some internals]
- - Now is heavily based on Path::Tiny instead of File::Path
- - Path::Tiny handles most of the File::Temp interaction.
-
- [04 Cleanup functions nuked from orbit]
+ [03 Cleanup functions nuked from orbit]
  - The persist function is now handled on a tempdir basis by directly using File::Temp tricks.
  - This means that any tempdir that is to be freed will be freed as soon as it is no longer referenced
  - so ->_clear_dir will wipe it
@@ -30,7 +26,7 @@ Release history for File-Tempdir-ForPackage
  - build: -1
  - configure: +1 -1 (recommends: +1)
  - develop: +49 -1 (recommends: -1, suggests: +1 ↑1)
- - runtime: +3 ↓1 -2
+ - runtime: +2 ↓1 -2
  - test: +2 ↓1 -1 (recommends: +3)
 
 0.1.1 2012-07-26T14:43:40Z
