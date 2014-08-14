@@ -112,13 +112,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/kentfredric/File-Tempdir-ForPackage/issues"
+         "web" : "https://github.com/kentnl/File-Tempdir-ForPackage/issues"
       },
-      "homepage" : "https://github.com/kentfredric/File-Tempdir-ForPackage",
+      "homepage" : "https://github.com/kentnl/File-Tempdir-ForPackage",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/kentfredric/File-Tempdir-ForPackage.git",
-         "web" : "https://github.com/kentfredric/File-Tempdir-ForPackage"
+         "url" : "https://github.com/kentnl/File-Tempdir-ForPackage.git",
+         "web" : "https://github.com/kentnl/File-Tempdir-ForPackage"
       }
    },
    "version" : "1.000000",

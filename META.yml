@@ -29,9 +29,9 @@ requires:
   strict: '0'
   warnings: '0'
 resources:
-  bugtracker: https://github.com/kentfredric/File-Tempdir-ForPackage/issues
-  homepage: https://github.com/kentfredric/File-Tempdir-ForPackage
-  repository: https://github.com/kentfredric/File-Tempdir-ForPackage.git
+  bugtracker: https://github.com/kentnl/File-Tempdir-ForPackage/issues
+  homepage: https://github.com/kentnl/File-Tempdir-ForPackage
+  repository: https://github.com/kentnl/File-Tempdir-ForPackage.git
 version: '1.000000'
 x_BuiltWith:
   modules:
