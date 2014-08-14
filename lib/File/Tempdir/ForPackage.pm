@@ -39,7 +39,7 @@ use constant TEMP => Path::Tiny::TEMP;
 has package => (
   is   => ro =>,
   lazy => 1,
-  default => sub { scalar [ caller(1) ]->[0] }
+  default => sub { scalar [ caller 1 ]->[0] },
 );
 
 
@@ -222,7 +222,7 @@ sub _build__dir {
 
 sub dir {
   my ($self) = shift;
-  return $self->_dir . '';
+  return $self->_dir . q[];
 }
 
 
