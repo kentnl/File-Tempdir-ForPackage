@@ -8,11 +8,11 @@ version 1.000000
 
 # DESCRIPTION
 
-This is mostly an interface wrapper for File::Temp::tempdir, stealing code from File::Tempdir;
+This is mostly an interface wrapper for `File::Temp::tempdir`, stealing code from `File::Tempdir`;
 
-- I constantly forget how File::Tempdir works
-- I often want a tempdir with the name of the package working with it enshrined in the path
-- I constantly forget the magic glue syntax to get a folder inside a System Tempdir with a custom prefix and a user defined length of random characters.
+- I constantly forget how `File::Tempdir` works
+- I often want a `tempdir` with the name of the package working with it enshrined in the path
+- I constantly forget the magic glue syntax to get a folder inside a system `tempdir` with a custom prefix and a user defined length of random characters.
 
 And this is designed to solve this simply.
 
@@ -23,9 +23,9 @@ use File::TempDir::ForPackage;
 
 do shit in \`$dir\`
 $dir on Linux will be something like /tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/
-so if it crashes and leaves a tempdir behind, you will know who left that tempdir behind and have a way of cleaning it up.
+so if it crashes and leaves a `tempdir` behind, you will know who left that `tempdir` behind and have a way of cleaning it up.
 
-When $tempdir is destroyed, $dir will be cleaned;
+When `$tempdir` is destroyed, `$dir` will be cleaned;
 
 Additionally:
 
@@ -33,9 +33,9 @@ Additionally:
       ...
     });
 
-Is there for people who don't trust scope auto-cleansing and want to know when the dir is reaped.
+Is there for people who don't trust scope auto-cleansing and want to know when the directory is reaped.
 
-Additionally, this code can be run in a tight loop creating and destroying lots of similary named tempdirs without risk of conflict.
+Additionally, this code can be run in a tight loop creating and destroying lots of similarly named temporary directories without risk of conflict.
 
     for my $i ( 0 .. 30  ) {
       $dir->run_once_in(sub {
@@ -83,14 +83,14 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 ## `preserve`
 
-Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+Toggle the preservation of the `tempdir` after it goes out of scope or is otherwise indicated for cleaning.
 
     $instance->preserve(); # tempdir is now preserved after cleanup
     $instance->preserve(0); # tempdir is purged at cleanup
     $instance->preserve(1); # tempdir is preserved after cleanup
 
-Note that in `run_once_in`, a new tempdir is created and set for this modules consumption for each run of `run_once_in`,
-regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+Note that in `run_once_in`, a new `tempdir` is created and set for this modules consumption for each run of `run_once_in`,
+regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the file system.
 
 Thus:
 
@@ -101,7 +101,7 @@ Thus:
       });
     }
 
-Will create 10 temporary directories on your filesystem and not reap them.
+Will create 10 temporary directories on your file system and not reap them.
 
 ## `dir`
 
@@ -120,14 +120,14 @@ Vivifies a temporary directory for the scope of the passed sub.
 
     # temporary directory is reset, and possibly reaped.
 
-You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+You can call this method repeatedly, and you'll get a separate temporary directory each time.
 
 # ATTRIBUTES
 
 ## `package`
 
 The package to report as being associated with.
-This really can be any string, as its sanitised and then used as a path part.
+This really can be any string, as its sanitized and then used as a path part.
 
 If not specified, will inspect `caller`
 
@@ -140,7 +140,7 @@ Note: If you want `with_version` to work properly, specifying a valid package na
 
 ## `with_version`
 
-Include the version from `package->VERSION()` in the tempdir path.
+Include the version from `package->VERSION()` in the `tempdir` path.
 
 Defaults to false.
 
@@ -151,7 +151,7 @@ Defaults to false.
 
 ## `with_timestamp`
 
-Include `time` in the tempdir path.
+Include `time` in the `tempdir` path.
 
 Defaults to false.
 
@@ -162,7 +162,7 @@ Defaults to false.
 
 ## `with_pid`
 
-Include `$$` in the tempdir path.
+Include `$$` in the `tempdir` path.
 
 Defaults to false.
 
@@ -173,7 +173,7 @@ Defaults to false.
 
 ## `num_random`
 
-The number of characters of randomness to include in the tempdir template.
+The number of characters of randomness to include in the `tempdir` template.
 
 Defaults to 8. Must be no lower than 4.
 
@@ -186,27 +186,27 @@ Defaults to 8. Must be no lower than 4.
 
 ## `_preserve`
 
-Internal boolean for tracking the \_preserve state.
+Internal `boolean` for tracking the \_preserve state.
 
 ## `_dir`
 
-Internal File::Tempdir path.
+Internal `File::Tempdir` path.
 
 # PRIVATE METHODS
 
 ## `_build__dir`
 
-Initializer for \_dir which creates a temporary directory based on the passed parameters.
+Builder method for \_dir which creates a temporary directory based on the passed parameters.
 
 # PRIVATE FUNCTIONS
 
 ## `_clean_pkg`
 
-Scrape garbage out of the 'package' field for use in filesystem tokens.
+Scrape garbage out of the 'package' field for use in file system tokens.
 
 ## `_clean_ver`
 
-Scrape garbage out of versions for use in filesystem tokens.
+Scrape garbage out of versions for use in file system tokens.
 
 # AUTHOR
 

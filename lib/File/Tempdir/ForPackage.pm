@@ -19,7 +19,7 @@ use File::Temp qw();
 =attr C<package>
 
 The package to report as being associated with.
-This really can be any string, as its sanitised and then used as a path part.
+This really can be any string, as its sanitized and then used as a path part.
 
 If not specified, will inspect C<caller>
   
@@ -40,7 +40,7 @@ has package => (
 
 =attr C<with_version>
 
-Include the version from C<< package->VERSION() >> in the tempdir path.
+Include the version from C<< package->VERSION() >> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -52,7 +52,7 @@ Defaults to false.
 
 =attr C<with_timestamp>
 
-Include C<time> in the tempdir path.
+Include C<time> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -64,7 +64,7 @@ Defaults to false.
 
 =attr C<with_pid>
 
-Include C<$$> in the tempdir path.
+Include C<$$> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -76,7 +76,7 @@ Defaults to false.
 
 =attr C<num_random>
 
-The number of characters of randomness to include in the tempdir template.
+The number of characters of randomness to include in the C<tempdir> template.
 
 Defaults to 8. Must be no lower than 4.
 
@@ -101,7 +101,7 @@ has num_random     => (
 
 =p_attr C<_preserve>
 
-Internal boolean for tracking the _preserve state.
+Internal C<boolean> for tracking the _preserve state.
 
 =cut
 
@@ -109,7 +109,7 @@ has '_preserve' => ( is => rw =>, init_arg => 'preserve', lazy => 1, default => 
 
 =p_attr C<_dir>
 
-Internal File::Tempdir path.
+Internal C<File::Tempdir> path.
 
 =cut
 
@@ -117,14 +117,14 @@ has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
 
 =method C<preserve>
 
-Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+Toggle the preservation of the C<tempdir> after it goes out of scope or is otherwise indicated for cleaning.
 
   $instance->preserve(); # tempdir is now preserved after cleanup
   $instance->preserve(0); # tempdir is purged at cleanup
   $instance->preserve(1); # tempdir is preserved after cleanup
 
-Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>,
-regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+Note that in C<run_once_in>, a new C<tempdir> is created and set for this modules consumption for each run of C<run_once_in>,
+regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the file system.
 
 Thus:
 
@@ -135,7 +135,7 @@ Thus:
     });
   }
 
-Will create 10 temporary directories on your filesystem and not reap them.
+Will create 10 temporary directories on your file system and not reap them.
 
 =cut
 
@@ -143,17 +143,17 @@ sub preserve {
   my ( $self, @args ) = @_;
   if ( @args and not $args[0] ) {
     $self->_preserve(0);
-    $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(1);
+    $self->_dir->[TEMP]->unlink_on_destroy(1);
     return;
   }
   $self->_preserve(1);
-  $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  $self->_dir->[TEMP]->unlink_on_destroy(0);
   return 1;
 }
 
 =p_function C<_clean_pkg>
 
-Scrape garbage out of the 'package' field for use in filesystem tokens.
+Scrape garbage out of the 'package' field for use in file system tokens.
 
 =cut
 
@@ -166,7 +166,7 @@ sub _clean_pkg {
 
 =p_function C<_clean_ver>
 
-Scrape garbage out of versions for use in filesystem tokens.
+Scrape garbage out of versions for use in file system tokens.
 
 =cut
 
@@ -179,7 +179,7 @@ sub _clean_ver {
 
 =p_method C<_build__dir>
 
-Initializer for _dir which creates a temporary directory based on the passed parameters.
+Builder method for _dir which creates a temporary directory based on the passed parameters.
 
 =cut
 
@@ -232,7 +232,7 @@ Vivifies a temporary directory for the scope of the passed sub.
 
   # temporary directory is reset, and possibly reaped.
 
-You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+You can call this method repeatedly, and you'll get a separate temporary directory each time.
 
 =cut
 
@@ -255,15 +255,15 @@ no Moo;
 
 =head1 DESCRIPTION
 
-This is mostly an interface wrapper for File::Temp::tempdir, stealing code from File::Tempdir;
+This is mostly an interface wrapper for C<File::Temp::tempdir>, stealing code from C<File::Tempdir>;
 
 =over 4
 
-=item * I constantly forget how File::Tempdir works
+=item * I constantly forget how C<File::Tempdir> works
 
-=item * I often want a tempdir with the name of the package working with it enshrined in the path
+=item * I often want a C<tempdir> with the name of the package working with it enshrined in the path
 
-=item * I constantly forget the magic glue syntax to get a folder inside a System Tempdir with a custom prefix and a user defined length of random characters.
+=item * I constantly forget the magic glue syntax to get a folder inside a system C<tempdir> with a custom prefix and a user defined length of random characters.
 
 =back
 
@@ -276,9 +276,9 @@ use File::TempDir::ForPackage;
 
 do shit in `$dir`
 $dir on Linux will be something like /tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/
-so if it crashes and leaves a tempdir behind, you will know who left that tempdir behind and have a way of cleaning it up.
+so if it crashes and leaves a C<tempdir> behind, you will know who left that C<tempdir> behind and have a way of cleaning it up.
 
-When $tempdir is destroyed, $dir will be cleaned;
+When C<$tempdir> is destroyed, C<$dir> will be cleaned;
 
 Additionally:
 
@@ -286,9 +286,9 @@ Additionally:
     ...
   });
 
-Is there for people who don't trust scope auto-cleansing and want to know when the dir is reaped.
+Is there for people who don't trust scope auto-cleansing and want to know when the directory is reaped.
 
-Additionally, this code can be run in a tight loop creating and destroying lots of similary named tempdirs without risk of conflict.
+Additionally, this code can be run in a tight loop creating and destroying lots of similarly named temporary directories without risk of conflict.
 
   for my $i ( 0 .. 30  ) {
     $dir->run_once_in(sub {
