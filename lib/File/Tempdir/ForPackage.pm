@@ -391,7 +391,7 @@ Additionally:
 
 Is there for people who don't trust scope auto-cleansing and want to know when the dir is reaped.
 
-Additionally, this code can be run in a tight loop creating and destroying lots of similary named tempdirs without risk of conflict.
+Additionally, this code can be run in a tight loop creating and destroying lots of similarly named temporary directories without risk of conflict.
 
   for my $i ( 0 .. 30  ) {
     $dir->run_once_in(sub {
@@ -446,7 +446,7 @@ Toggle the preservation of the tempdir after it goes out of scope or is otherwis
   $instance->preserve(1); # tempdir is preserved after cleanup
 
 Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>,
-regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the file system.
 
 Thus:
 
@@ -476,14 +476,14 @@ Vivifies a temporary directory for the scope of the passed sub.
 
   # temporary directory is reset, and possibly reaped.
 
-You can call this method repeatedly, and you'll get a seperate temporary directory each time.
+You can call this method repeatedly, and you'll get a separate temporary directory each time.
 
 =head1 ATTRIBUTES
 
 =head2 C<package>
 
 The package to report as being associated with.
-This really can be any string, as its sanitised and then used as a path part.
+This really can be any string, as its sanitized and then used as a path part.
 
 If not specified, will inspect C<caller>
 
@@ -542,7 +542,7 @@ Defaults to 8. Must be no lower than 4.
 
 =head2 C<_preserve>
 
-Internal boolean for tracking the _preserve state.
+Internal C<boolean> for tracking the _preserve state.
 
 =head2 C<_dir>
 

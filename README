@@ -42,7 +42,8 @@ DESCRIPTION
     know when the dir is reaped.
 
     Additionally, this code can be run in a tight loop creating and
-    destroying lots of similary named tempdirs without risk of conflict.
+    destroying lots of similarly named temporary directories without risk of
+    conflict.
 
       for my $i ( 0 .. 30  ) {
         $dir->run_once_in(sub {
@@ -99,7 +100,7 @@ METHODS
     Note that in "run_once_in", a new tempdir is created and set for this
     modules consumption for each run of "run_once_in", regardless of this
     setting. All this setting will do, when set, will prevent each instance
-    being reaped from the filesystem.
+    being reaped from the file system.
 
     Thus:
 
@@ -128,13 +129,13 @@ METHODS
 
       # temporary directory is reset, and possibly reaped.
 
-    You can call this method repeatedly, and you'll get a seperate temporary
+    You can call this method repeatedly, and you'll get a separate temporary
     directory each time.
 
 ATTRIBUTES
   "package"
     The package to report as being associated with. This really can be any
-    string, as its sanitised and then used as a path part.
+    string, as its sanitized and then used as a path part.
 
     If not specified, will inspect "caller"
 
@@ -189,7 +190,7 @@ ATTRIBUTES
 
 PRIVATE ATTRIBUTES
   "_preserve"
-    Internal boolean for tracking the _preserve state.
+    Internal "boolean" for tracking the _preserve state.
 
   "_dir"
     Internal File::Tempdir path.
