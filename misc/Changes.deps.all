@@ -65,7 +65,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Carp
  - Path::Tiny
  - constant
- - utf8
 
  [Added / test recommends]
  - CPAN::Meta 2.120900
@@ -80,7 +79,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::PluginBundle::Author::KENTNL v1.4.2 → 2.017000
 
  [Changed / runtime requires]
- - perl v5.10.0 → 5.008
+ - perl v5.10.0 → 5.006
 
  [Changed / test requires]
  - Test::More 0.98 → 0.89
