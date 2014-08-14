@@ -62,6 +62,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::App::Command::bakeini 0.001001
 
  [Added / runtime requires]
+ - MooX::Lsub
  - utf8
 
  [Added / test recommends]
@@ -93,6 +94,9 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
 
  [Removed / develop requires]
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
+
+ [Removed / runtime requires]
+ - Sub::Quote
 
  [Removed / test requires]
  - File::Find
