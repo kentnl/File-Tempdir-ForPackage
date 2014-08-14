@@ -26,7 +26,7 @@ requires:
   Moo: '0'
   Path::Tiny: '0'
   constant: '0'
-  perl: '5.008'
+  perl: '5.006'
   strict: '0'
   warnings: '0'
 resources:
