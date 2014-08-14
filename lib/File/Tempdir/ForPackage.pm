@@ -2,13 +2,7 @@ use strict;
 use warnings;
 
 package File::Tempdir::ForPackage;
-BEGIN {
-  $File::Tempdir::ForPackage::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $File::Tempdir::ForPackage::VERSION = '0.1.1';
-}
-
+$File::Tempdir::ForPackage::VERSION = '0.1.2';
 # ABSTRACT: Easy temporary directories associated with packages.
 
 use Moo;
@@ -16,10 +10,155 @@ use Sub::Quote qw( quote_sub );
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 has package => (
     is      => 'ro',
     default => quote_sub q| scalar [ caller() ]->[0] |,
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 has with_version   => ( is => 'ro', default => quote_sub q{ undef } );
@@ -37,10 +176,42 @@ has num_random     => (
 );
 
 
+
+
+
+
+
 has _preserve => ( is => 'rw', default => quote_sub q{ undef } );
 
 
+
+
+
+
+
 has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 sub preserve {
@@ -62,6 +233,11 @@ sub preserve {
 }
 
 
+
+
+
+
+
 sub _clean_pkg {
     my ($package) = @_;
     $package =~ s/::/-/gsmx;
@@ -70,12 +246,22 @@ sub _clean_pkg {
 }
 
 
+
+
+
+
+
 sub _clean_ver {
     my ($ver) = @_;
     return 'versionundef' if not defined $ver;
     $ver =~ s/[^v\d_.]+/_/gsmx;
     return $ver;
 }
+
+
+
+
+
 
 
 sub _build__dir {
@@ -102,10 +288,29 @@ sub _build__dir {
 }
 
 
+
+
+
+
+
+
+
 sub dir {
     my ($self) = shift;
     return $self->_dir;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 sub cleanse {
@@ -118,6 +323,20 @@ sub cleanse {
     $self->_clear_dir;
     return $self;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 sub run_once_in {
@@ -135,6 +354,12 @@ sub run_once_in {
 }
 
 
+
+
+
+
+
+
 sub DEMOLISH {
     my ( $self, $in_g_d ) = @_;
     $self->cleanse;
@@ -146,9 +371,10 @@ no Moo;
 1;
 
 __END__
+
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -156,7 +382,7 @@ File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 =head1 VERSION
 
-version 0.1.1
+version 0.1.2
 
 =head1 DESCRIPTION
 
@@ -387,10 +613,9 @@ Kent Fredric <kentfredric@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Kent Fredric <kentfredric@gmail.com>.
+This software is copyright (c) 2014 by Kent Fredric <kentfredric@gmail.com>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
