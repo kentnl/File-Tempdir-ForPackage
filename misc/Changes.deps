@@ -5,6 +5,7 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  - ExtUtils::MakeMaker
 
  [Added / runtime requires]
+ - Carp
  - Path::Tiny
  - utf8
 
