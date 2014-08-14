@@ -1,12 +1,12 @@
 Release history for File-Tempdir-ForPackage
 
-1.000000 2014-08-14T04:08:55Z
+1.000000 2014-08-14T04:09:27Z
  [Dependencies::Stats]
  - Dependencies changed since 0.1.1, see misc/*.deps* for details
  - build: -1
  - configure: +1 -1 (recommends: +1)
  - develop: +49 -1 (recommends: -1, suggests: +1 ↑1)
- - runtime: +3 ↓1 -2
+ - runtime: +2 ↓1 -2
  - test: +2 ↓1 -1 (recommends: +3)
 
 0.1.1 2012-07-26T14:43:40Z

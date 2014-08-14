@@ -336,7 +336,6 @@ no Moo;
 
 
 1;
-## Please see file perltidy.ERR
 
 __END__
 

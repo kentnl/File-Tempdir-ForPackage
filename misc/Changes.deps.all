@@ -62,7 +62,6 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::App::Command::bakeini 0.001001
 
  [Added / runtime requires]
- - MooX::Lsub
  - Path::Tiny
  - utf8
 
