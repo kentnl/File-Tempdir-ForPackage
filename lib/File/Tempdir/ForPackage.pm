@@ -11,7 +11,7 @@ our $VERSION = '1.000000';
 
 # AUTHORITY
 
-use Moo;
+use Moo qw( has );
 use Sub::Quote qw( quote_sub );
 
 =head1 DESCRIPTION
