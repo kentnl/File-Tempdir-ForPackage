@@ -389,7 +389,7 @@ Additionally:
     ...
   });
 
-Is there for people who don't trust scope auto-cleansing and want to know when the dir is reaped.
+Is there for people who don't trust scope auto-cleansing and want to know when the directory is reaped.
 
 Additionally, this code can be run in a tight loop creating and destroying lots of similarly named temporary directories without risk of conflict.
 
@@ -546,13 +546,13 @@ Internal C<boolean> for tracking the _preserve state.
 
 =head2 C<_dir>
 
-Internal File::Tempdir path.
+Internal C<File::Tempdir> path.
 
 =head1 PRIVATE METHODS
 
 =head2 C<_build__dir>
 
-Initializer for _dir which creates a temporary directory based on the passed parameters.
+Initialiser for _dir which creates a temporary directory based on the passed parameters.
 
 =head1 PRIVATE FUNCTIONS
 
