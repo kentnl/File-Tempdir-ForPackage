@@ -220,6 +220,7 @@ has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
 
 
 
+
 sub preserve {
   my ( $self, @args ) = @_;
   if ( not @args ) {
@@ -350,6 +351,7 @@ sub run_once_in {
   $code = $options unless defined $code;
   require File::pushd;
   {
+    ## no critic (Variables::ProhibitUnusedVarsStricter)
     my $marker = File::pushd::pushd( $self->dir );
     $code->( $self->dir );
   }
@@ -367,7 +369,7 @@ sub run_once_in {
 
 
 sub DEMOLISH {
-  my ( $self, $in_g_d ) = @_;
+  my ( $self, ) = @_;
   $self->cleanse;
   return;
 }
@@ -479,7 +481,8 @@ Toggle the preservation of the tempdir after it goes out of scope or is otherwis
   $instance->preserve(0); # tempdir is purged at cleanup
   $instance->preserve(1); # tempdir is preserved after cleanup
 
-Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>, regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
+Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>,
+regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the filesystem.
 
 Thus:
 
