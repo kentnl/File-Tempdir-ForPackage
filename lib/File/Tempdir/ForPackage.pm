@@ -364,7 +364,7 @@ This is mostly an interface wrapper for C<File::Temp::tempdir>, stealing code fr
 
 =item * I constantly forget how File::Tempdir works
 
-=item * I often want a tempdir with the name of the package working with it enshrined in the path
+=item * I often want a C<tempdir> with the name of the package working with it enshrined in the path
 
 =item * I constantly forget the magic glue syntax to get a folder inside a System Tempdir with a custom prefix and a user defined length of random characters.
 
@@ -379,9 +379,9 @@ use File::TempDir::ForPackage;
 
 do shit in `$dir`
 $dir on Linux will be something like /tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/
-so if it crashes and leaves a tempdir behind, you will know who left that tempdir behind and have a way of cleaning it up.
+so if it crashes and leaves a C<tempdir> behind, you will know who left that C<tempdir> behind and have a way of cleaning it up.
 
-When $tempdir is destroyed, $dir will be cleaned;
+When C<$tempdir> is destroyed, C<$dir> will be cleaned;
 
 Additionally:
 
@@ -439,13 +439,13 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 =head2 C<preserve>
 
-Toggle the preservation of the tempdir after it goes out of scope or is otherwise indicated for cleaning.
+Toggle the preservation of the C<tempdir> after it goes out of scope or is otherwise indicated for cleaning.
 
   $instance->preserve(); # tempdir is now preserved after cleanup
   $instance->preserve(0); # tempdir is purged at cleanup
   $instance->preserve(1); # tempdir is preserved after cleanup
 
-Note that in C<run_once_in>, a new tempdir is created and set for this modules consumption for each run of C<run_once_in>,
+Note that in C<run_once_in>, a new C<tempdir> is created and set for this modules consumption for each run of C<run_once_in>,
 regardless of this setting. All this setting will do, when set, will prevent each instance being reaped from the file system.
 
 Thus:
@@ -496,7 +496,7 @@ Note: If you want C<with_version> to work properly, specifying a valid package n
 
 =head2 C<with_version>
 
-Include the version from C<< package->VERSION() >> in the tempdir path.
+Include the version from C<< package->VERSION() >> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -507,7 +507,7 @@ Defaults to false.
 
 =head2 C<with_timestamp>
 
-Include C<time> in the tempdir path.
+Include C<time> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -518,7 +518,7 @@ Defaults to false.
 
 =head2 C<with_pid>
 
-Include C<$$> in the tempdir path.
+Include C<$$> in the C<tempdir> path.
 
 Defaults to false.
 
@@ -529,7 +529,7 @@ Defaults to false.
 
 =head2 C<num_random>
 
-The number of characters of randomness to include in the tempdir template.
+The number of characters of randomness to include in the C<tempdir> template.
 
 Defaults to 8. Must be no lower than 4.
 
