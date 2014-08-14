@@ -26,7 +26,7 @@ The package to report as being associated with.
 This really can be any string, as its sanitized and then used as a path part.
 
 If not specified, will inspect C<caller>
-  
+
   my $instance = CLASS->new(
     package => 'Something::Here',
     ...
@@ -133,8 +133,8 @@ regardless of this setting. All this setting will do, when set, will prevent eac
 Thus:
 
   $dir->preserve(1);
-  for( 1..10 ){ 
-    $dir->run_once_in(sub{ 
+  for( 1..10 ){
+    $dir->run_once_in(sub{
 
     });
   }
