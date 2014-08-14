@@ -116,7 +116,8 @@ Detach the physical file system directory from being connected to this object.
 If `preserve` is not set, then this will mean `dir` will be reaped, and the `dir` attribute
 will be reset, ready to be re-initialized the next time it is needed.
 
-If `preserve` is set, then from the outside codes persective its basically the same, `dir` is reset, waiting for re-initialization next time it is needed. Just `dir` is not reaped.
+If `preserve` is set, then from the outside codes persective its basically the same, `dir` is reset, waiting for
+re-initialization next time it is needed. Just `dir` is not reaped.
 
     $instance->cleanse();
 

@@ -312,7 +312,8 @@ Detach the physical file system directory from being connected to this object.
 If C<preserve> is not set, then this will mean C<dir> will be reaped, and the C<dir> attribute
 will be reset, ready to be re-initialized the next time it is needed.
 
-If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for re-initialization next time it is needed. Just C<dir> is not reaped.
+If C<preserve> is set, then from the outside codes persective its basically the same, C<dir> is reset, waiting for
+re-initialization next time it is needed. Just C<dir> is not reaped.
 
   $instance->cleanse();
  
