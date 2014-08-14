@@ -5,6 +5,7 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
  - ExtUtils::MakeMaker
 
  [Added / runtime requires]
+ - MooX::Lsub
  - utf8
 
  [Added / test requires]
@@ -22,6 +23,9 @@ This file contains changes in REQUIRED dependencies for standard CPAN phases (co
 
  [Removed / configure requires]
  - Module::Build 0.4001
+
+ [Removed / runtime requires]
+ - Sub::Quote
 
  [Removed / test requires]
  - File::Find

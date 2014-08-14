@@ -13,9 +13,8 @@ our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
 use Moo qw( has );
 use MooX::Lsub qw( lsub );
-
-require File::Path;
-require File::Temp;
+use Path::Tiny;
+use File::Temp qw();
 
 
 
@@ -185,7 +184,7 @@ has num_random      => (
 
 
 
-has _preserve => ( is => 'rw', default => sub { undef } );
+has '_preserve' => ( is => rw =>, init_arg => 'preserve', lazy => 1, default => sub { 0 } );
 
 
 
@@ -219,22 +218,17 @@ has _dir => ( is => 'lazy', clearer => 1, predicate => 1 );
 
 
 
+
 sub preserve {
   my ( $self, @args ) = @_;
-  if ( not @args ) {
-    $self->_preserve(1);
-    return 1;
+  if ( @args and not $args[0] ) {
+    $self->_preserve(0);
+    $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(1);
+    return;
   }
-  else {
-    if ( not $args[0] ) {
-      $self->_preserve(0);
-      return;
-    }
-    else {
-      $self->_preserve(1);
-      return 1;
-    }
-  }
+  $self->_preserve(1);
+  $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  return 1;
 }
 
 
@@ -287,7 +281,10 @@ sub _build__dir {
   }
   $template .= q{-} . ( 'X' x $self->num_random );
 
-  my $dir = File::Temp::tempdir( $template, TMPDIR => 1, );
+  my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
+  if ( $self->_preserve ) {
+    $dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  }
   return $dir;
 }
 
@@ -321,9 +318,10 @@ sub dir {
 sub cleanse {
   my ($self) = shift;
   return $self unless $self->_has_dir;
-  if ( not $self->_preserve ) {
-    File::Path::rmtree( $self->_dir, 0, 0 );
-  }
+
+  #if ( not $self->_preserve ) {
+  #  $self->_dir->remove_tree();
+  #}
   $self->_clear_dir;
   return $self;
 }
