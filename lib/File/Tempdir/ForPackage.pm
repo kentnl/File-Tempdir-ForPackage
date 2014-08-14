@@ -362,11 +362,11 @@ This is mostly an interface wrapper for C<File::Temp::tempdir>, stealing code fr
 
 =over 4
 
-=item * I constantly forget how File::Tempdir works
+=item * I constantly forget how C<File::Tempdir> works
 
 =item * I often want a C<tempdir> with the name of the package working with it enshrined in the path
 
-=item * I constantly forget the magic glue syntax to get a folder inside a System Tempdir with a custom prefix and a user defined length of random characters.
+=item * I constantly forget the magic glue syntax to get a folder inside a system C<tempdir> with a custom prefix and a user defined length of random characters.
 
 =back
 

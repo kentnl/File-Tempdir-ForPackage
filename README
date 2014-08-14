@@ -9,13 +9,13 @@ DESCRIPTION
     This is mostly an interface wrapper for "File::Temp::tempdir", stealing
     code from "File::Tempdir";
 
-    *   I constantly forget how File::Tempdir works
+    *   I constantly forget how "File::Tempdir" works
 
     *   I often want a "tempdir" with the name of the package working with
         it enshrined in the path
 
     *   I constantly forget the magic glue syntax to get a folder inside a
-        System Tempdir with a custom prefix and a user defined length of
+        system "tempdir" with a custom prefix and a user defined length of
         random characters.
 
     And this is designed to solve this simply.
