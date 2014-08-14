@@ -71,6 +71,7 @@ do { my $x = {
                                       'File::pushd' => '0',
                                       'Moo' => '0',
                                       'Path::Tiny' => '0',
+                                      'constant' => '0',
                                       'perl' => '5.008',
                                       'strict' => '0',
                                       'utf8' => '0',

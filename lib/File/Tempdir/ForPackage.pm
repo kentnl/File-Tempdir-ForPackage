@@ -15,6 +15,8 @@ use Carp qw( croak );
 use Moo qw( has );
 use Path::Tiny;
 use File::Temp qw();
+use constant MINX => File::Temp::MINX;
+use constant TEMP => Path::Tiny::TEMP;
 
 
 
@@ -93,8 +95,8 @@ has with_pid       => ( is => ro =>, lazy => 1, default => sub { undef } );
 has num_random     => (
   is  => 'ro',
   isa => sub {
-    return if $_[0] >= File::Temp::MINX();
-    croak( "num_random ( $_[0] ) must be >= " . File::Temp::MINX() );
+    return if $_[0] >= MINX();
+    croak( "num_random ( $_[0] ) must be >= " . MINX() );
   },
   default => sub { 8 },
 );
@@ -143,11 +145,11 @@ sub preserve {
   my ( $self, @args ) = @_;
   if ( @args and not $args[0] ) {
     $self->_preserve(0);
-    $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(1);
+    $self->_dir->[TEMP]->unlink_on_destroy(1);
     return;
   }
   $self->_preserve(1);
-  $self->_dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+  $self->_dir->[TEMP]->unlink_on_destroy(0);
   return 1;
 }
 
@@ -203,7 +205,7 @@ sub _build__dir {
 
   my $dir = Path::Tiny->tempdir( TEMPLATE => $template, TMPDIR => 1 );
   if ( $self->_preserve ) {
-    $dir->[Path::Tiny::TEMP]->unlink_on_destroy(0);
+    $dir->[TEMP]->unlink_on_destroy(0);
   }
   return $dir;
 }
