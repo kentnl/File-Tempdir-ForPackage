@@ -254,6 +254,8 @@ sub run_once_in {
 
 no Moo;
 
+1;
+
 =head1 DESCRIPTION
 
 This is mostly an interface wrapper for C<File::Temp::tempdir>, stealing code from C<File::Tempdir>;
@@ -336,5 +338,3 @@ Except of course, with a package of your choosing, and possibly that packages ve
 
 
 =cut
-
-1;
