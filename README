@@ -3,7 +3,7 @@ NAME
     packages.
 
 VERSION
-    version 1.000001
+    version 1.000002
 
 DESCRIPTION
     This is mostly an interface wrapper for "File::Temp::tempdir", stealing
