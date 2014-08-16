@@ -1,5 +1,18 @@
 Release history for File-Tempdir-ForPackage
 
+1.000001 2014-08-15T22:56:28Z
+ [00 Trivial]
+ - CPANDAY!
+ - no code changes
+ - whitespace reduced.
+
+ [Dependencies::Stats]
+ - Dependencies changed since 1.000000, see misc/*.deps* for details
+ - develop: ↑1 (suggests: ↑1)
+
+ [Misc]
+ - Improve source side POD to reduce build side whitespace.
+
 1.000000 2014-08-14T08:50:45Z
  [00 Major]
  - Changes that will affect hand operated downstreams.
