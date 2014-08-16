@@ -4,7 +4,7 @@ use warnings;
 
 package File::Tempdir::ForPackage;
 
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 
 # ABSTRACT: Easy temporary directories associated with packages.
 
