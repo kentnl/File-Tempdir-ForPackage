@@ -1,6 +1,8 @@
 This file contains changes in REQUIRED dependencies for standard CPAN phases (configure/build/runtime/test)
 
-1.000002
+1.000003
+
+1.000002 2017-03-10T11:35:18Z
  [Added / configure requires]
  - perl 5.006
 

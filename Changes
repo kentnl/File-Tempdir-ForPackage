@@ -1,5 +1,7 @@
 Release history for File-Tempdir-ForPackage
 
+1.000003 2017-03-10T11:36:17Z d6e15be
+
 1.000002 2017-03-10T11:35:18Z 2b67ff5
  - Avoid test failures due to -Ddefault_inc_excludes_dot
 
