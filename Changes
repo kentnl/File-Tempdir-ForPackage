@@ -1,6 +1,14 @@
 Release history for File-Tempdir-ForPackage
 
 {{$NEXT}}
+ - Avoid test failures due to -Ddefault_inc_excludes_dot
+
+ [Dependencies::Stats]
+ - Dependencies changed since 1.000001, see misc/*.deps* for details
+ - configure: +1 (recommends: ↑1)
+ - develop: +14 ↑4 -3 (recommends: +1, suggests: ↑2)
+ - runtime: (recommends: +1)
+ - test: +1 ↓1 (recommends: ↑1 ↓1)
 
 1.000001 2014-08-15T22:56:28Z
  [00 Trivial]
@@ -50,4 +58,3 @@ Release history for File-Tempdir-ForPackage
 
 0.1.0 2012-07-26T12:58:43Z
  - First version.
-
