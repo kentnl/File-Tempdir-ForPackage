@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 1;
 
 use File::Tempdir::ForPackage;
 
@@ -23,5 +23,3 @@ for my $i ( 0 .. 30 ) {
   );
 }
 pass();
-done_testing;
-

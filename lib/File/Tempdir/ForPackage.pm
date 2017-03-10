@@ -4,7 +4,7 @@ use warnings;
 
 package File::Tempdir::ForPackage;
 
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 
 # ABSTRACT: Easy temporary directories associated with packages.
 
@@ -268,7 +268,7 @@ File::Tempdir::ForPackage - Easy temporary directories associated with packages.
 
 =head1 VERSION
 
-version 1.000001
+version 1.000002
 
 =head1 DESCRIPTION
 
@@ -480,11 +480,11 @@ Scrape garbage out of versions for use in file system tokens.
 
 =head1 AUTHOR
 
-Kent Fredric <kentfredric@gmail.com>
+Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Kent Fredric <kentfredric@gmail.com>.
+This software is copyright (c) 2017 by Kent Fredric <kentfredric@gmail.com>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
