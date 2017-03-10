@@ -1,219 +1,108 @@
-NAME
-    File::Tempdir::ForPackage - Easy temporary directories associated with
-    packages.
+File::Tempdir::ForPackage
 
-VERSION
-    version 1.000002
+This is mostly an interface wrapper for "File::Temp::tempdir", stealing
+code from "File::Tempdir";
 
-DESCRIPTION
-    This is mostly an interface wrapper for "File::Temp::tempdir", stealing
-    code from "File::Tempdir";
+*   I constantly forget how "File::Tempdir" works
 
-    *   I constantly forget how "File::Tempdir" works
+*   I often want a "tempdir" with the name of the package working with
+    it enshrined in the path
 
-    *   I often want a "tempdir" with the name of the package working with
-        it enshrined in the path
+*   I constantly forget the magic glue syntax to get a folder inside a
+    system "tempdir" with a custom prefix and a user defined length of
+    random characters.
 
-    *   I constantly forget the magic glue syntax to get a folder inside a
-        system "tempdir" with a custom prefix and a user defined length of
-        random characters.
+And this is designed to solve this simply.
 
-    And this is designed to solve this simply.
+use File::TempDir::ForPackage;
 
-    use File::TempDir::ForPackage;
+  my $tempdir = File::TempDir::ForPackage->new( package => __PACKAGE__ , use_version => 1 );
+  my $dir = $tempdir->dir();
 
-      my $tempdir = File::TempDir::ForPackage->new( package => __PACKAGE__ , use_version => 1 );
-      my $dir = $tempdir->dir();
+do shit in `$dir` $dir on Linux will be something like
+/tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/ so if it crashes
+and leaves a "tempdir" behind, you will know who left that "tempdir"
+behind and have a way of cleaning it up.
 
-    do shit in `$dir` $dir on Linux will be something like
-    /tmp/perl-Some-Package-maybewith-a-VERSION-AFG14561/ so if it crashes
-    and leaves a "tempdir" behind, you will know who left that "tempdir"
-    behind and have a way of cleaning it up.
+When $tempdir is destroyed, $dir will be cleaned;
 
-    When $tempdir is destroyed, $dir will be cleaned;
+Additionally:
 
-    Additionally:
+  $dir->run_once_in(sub{
+    ...
+  });
 
-      $dir->run_once_in(sub{
-        ...
-      });
+Is there for people who don't trust scope auto-cleansing and want to
+know when the directory is reaped.
 
-    Is there for people who don't trust scope auto-cleansing and want to
-    know when the directory is reaped.
+Additionally, this code can be run in a tight loop creating and
+destroying lots of similarly named temporary directories without risk of
+conflict.
 
-    Additionally, this code can be run in a tight loop creating and
-    destroying lots of similarly named temporary directories without risk of
-    conflict.
+  for my $i ( 0 .. 30  ) {
+    $dir->run_once_in(sub {
+      system 'find $PWD';
+    });
+  }
 
-      for my $i ( 0 .. 30  ) {
-        $dir->run_once_in(sub {
-          system 'find $PWD';
-        });
-      }
+This emits something like:
 
-    This emits something like:
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-PzH4BD
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-5h8nkG
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-UXKt4S
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Lqg2aW
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-DkNeq6
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-jRI_zF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-j0_Gt1
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iX1ddT
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmvikK
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-QNGOUF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-6wssvL
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmwZxl
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-wIzRTs
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xetCym
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-8Y0vyX
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zlqt6X
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-U5Z_Sa
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-sKmow1
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rUND95
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-XjPSGF
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ec8sZZ
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-_4NBwX
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xM9i6l
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-p3FhJf
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zv0sso
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rP8cAi
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iade0x
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-fsDDPy
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-FeCcfZ
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-ta5yfg
+  /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-rdcQhF
 
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-PzH4BD
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-5h8nkG
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-UXKt4S
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Lqg2aW
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-DkNeq6
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-jRI_zF
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-j0_Gt1
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iX1ddT
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmvikK
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-QNGOUF
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-6wssvL
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ZmwZxl
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-wIzRTs
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xetCym
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-8Y0vyX
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zlqt6X
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-U5Z_Sa
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-sKmow1
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rUND95
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-XjPSGF
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-ec8sZZ
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-_4NBwX
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-xM9i6l
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-p3FhJf
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-Zv0sso
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-rP8cAi
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303496-408662-iade0x
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-fsDDPy
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-FeCcfZ
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-ta5yfg
-      /tmp/perl-File-Tempdir-ForPackage-versionundef-1343303497-408662-rdcQhF
+Except of course, with a package of your choosing, and possibly that
+packages version.
 
-    Except of course, with a package of your choosing, and possibly that
-    packages version.
+INSTALLATION
 
-METHODS
-  "preserve"
-    Toggle the preservation of the "tempdir" after it goes out of scope or
-    is otherwise indicated for cleaning.
+This is a Perl module distribution. It should be installed with whichever
+tool you use to manage your installation of Perl, e.g. any of
 
-      $instance->preserve(); # tempdir is now preserved after cleanup
-      $instance->preserve(0); # tempdir is purged at cleanup
-      $instance->preserve(1); # tempdir is preserved after cleanup
+  cpanm .
+  cpan  .
+  cpanp -i .
 
-    Note that in "run_once_in", a new "tempdir" is created and set for this
-    modules consumption for each run of "run_once_in", regardless of this
-    setting. All this setting will do, when set, will prevent each instance
-    being reaped from the file system.
+Consult http://www.cpan.org/modules/INSTALL.html for further instruction.
+Should you wish to install this module manually, the procedure is
 
-    Thus:
-
-      $dir->preserve(1);
-      for( 1..10 ){
-        $dir->run_once_in(sub{
-
-        });
-      }
-
-    Will create 10 temporary directories on your file system and not reap
-    them.
-
-  "dir"
-    Return a path string to the created temporary directory
-
-      my $path = $instance->dir
-
-  "run_once_in"
-    Vivifies a temporary directory for the scope of the passed sub.
-
-      $instance->run_once_in(sub{
-        # temporary directory is created before this code runs.
-        # Cwd::getcwd is now inside the temporary directory.
-      });
-
-      # temporary directory is reset, and possibly reaped.
-
-    You can call this method repeatedly, and you'll get a separate temporary
-    directory each time.
-
-ATTRIBUTES
-  "package"
-    The package to report as being associated with. This really can be any
-    string, as its sanitized and then used as a path part.
-
-    If not specified, will inspect "caller"
-
-      my $instance = CLASS->new(
-        package => 'Something::Here',
-        ...
-      );
-
-    Note: If you want "with_version" to work properly, specifying a valid
-    package name will be helpful.
-
-  "with_version"
-    Include the version from "package->VERSION()" in the "tempdir" path.
-
-    Defaults to false.
-
-      my $instance = CLASS->new(
-        ...
-        with_version => 1,
-      );
-
-  "with_timestamp"
-    Include "time" in the "tempdir" path.
-
-    Defaults to false.
-
-      my $instance = CLASS->new(
-        ...
-        with_timestamp => 1,
-      );
-
-  "with_pid"
-    Include $$ in the "tempdir" path.
-
-    Defaults to false.
-
-      my $instance = CLASS->new(
-        ...
-        with_pid => 1,
-      );
-
-  "num_random"
-    The number of characters of randomness to include in the "tempdir"
-    template.
-
-    Defaults to 8. Must be no lower than 4.
-
-      my $instance = CLASS->new(
-        ...
-        num_random => 5,
-      );
-
-PRIVATE ATTRIBUTES
-  "_preserve"
-    Internal "boolean" for tracking the _preserve state.
-
-  "_dir"
-    Internal "File::Tempdir" path.
-
-PRIVATE METHODS
-  "_build__dir"
-    Builder method for _dir which creates a temporary directory based on the
-    passed parameters.
-
-PRIVATE FUNCTIONS
-  "_clean_pkg"
-    Scrape garbage out of the 'package' field for use in file system tokens.
-
-  "_clean_ver"
-    Scrape garbage out of versions for use in file system tokens.
-
-AUTHOR
-    Kent Fredric <kentfredric@gmail.com>
+  perl Makefile.PL
+  make
+  make test
+  make install
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by Kent Fredric
-    <kentfredric@gmail.com>.
 
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
+This software is copyright (c) 2017 by Kent Fredric
+<kentfredric@gmail.com>.
 
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
