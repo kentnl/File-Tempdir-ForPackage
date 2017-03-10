@@ -1,6 +1,8 @@
 Release history for File-Tempdir-ForPackage
 
 {{$NEXT}}
+
+1.000002 2017-03-10T11:35:18Z 2b67ff5
  - Avoid test failures due to -Ddefault_inc_excludes_dot
 
  [Dependencies::Stats]
